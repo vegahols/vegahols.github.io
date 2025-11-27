@@ -78,7 +78,9 @@
         const bgColor = value === "Active" ? "#E8F5E9" : "#FFF3E0";
         return `<span style="background-color: ${bgColor}; color: ${color}; padding: 4px 12px; border-radius: 12px; font-weight: 500; font-size: 12px;">${value}</span>`;
       } }}],
-      pagination: {"enabled":true,"pageSize":10,"controls":{"pageSizeSelector":{"enabled":true,"options":[5,10,25,50]},"pageInfo":true,"firstLastButtons":true,"previousNextButtons":true,"pageButtons":{"enabled":true,"count":7}}}
+      pagination: {"enabled":true,"pageSize":10,"controls":{"pageSizeSelector":{"enabled":true,"options":[5,10,25,50]},"pageInfo":true,"firstLastButtons":true,"previousNextButtons":true,"pageButtons":{"enabled":true,"count":7}}},
+      credits: {"enabled":false},
+      exporting: {"enabled":true}
     });
 
     function downloadCSV() {
