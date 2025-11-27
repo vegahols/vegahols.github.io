@@ -96,7 +96,7 @@ generate_norway_chart <- function() {
           min: 0,
           stops: [
             [0, "#E3F2FD"],
-            [1, "%s"]
+            [1, "#1565C0"]
           ]
         },
         series: [{
@@ -130,8 +130,7 @@ generate_norway_chart <- function() {
   </script>
 </body>
 </html>',
-    jsonlite::toJSON(map_data, auto_unbox = TRUE),
-    COLORS$primary
+    jsonlite::toJSON(map_data, auto_unbox = TRUE)
   )
 
   # Save HTML file
