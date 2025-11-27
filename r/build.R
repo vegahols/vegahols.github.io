@@ -168,7 +168,7 @@ index_html <- '<!DOCTYPE html>
         </div>
         <p style="color: #7f8c8d; font-size: 0.9rem; margin-bottom: 0.5rem;">Monthly sales performance</p>
         <div class="card-actions">
-          <a href="sales.html" class="btn btn-primary" target="_blank">View Chart</a>
+          <a href="sales.html" class="btn btn-primary">View Chart</a>
           <button class="btn btn-secondary" onclick="toggleEmbed(\'sales\')">Embed Code</button>
         </div>
         <div class="embed-code" id="embed-sales">
@@ -184,7 +184,7 @@ index_html <- '<!DOCTYPE html>
         </div>
         <p style="color: #7f8c8d; font-size: 0.9rem; margin-bottom: 0.5rem;">Quarterly revenue analysis</p>
         <div class="card-actions">
-          <a href="revenue.html" class="btn btn-primary" target="_blank">View Chart</a>
+          <a href="revenue.html" class="btn btn-primary">View Chart</a>
           <button class="btn btn-secondary" onclick="toggleEmbed(\'revenue\')">Embed Code</button>
         </div>
         <div class="embed-code" id="embed-revenue">
@@ -200,7 +200,7 @@ index_html <- '<!DOCTYPE html>
         </div>
         <p style="color: #7f8c8d; font-size: 0.9rem; margin-bottom: 0.5rem;">Product distribution breakdown</p>
         <div class="card-actions">
-          <a href="market.html" class="btn btn-primary" target="_blank">View Chart</a>
+          <a href="market.html" class="btn btn-primary">View Chart</a>
           <button class="btn btn-secondary" onclick="toggleEmbed(\'market\')">Embed Code</button>
         </div>
         <div class="embed-code" id="embed-market">

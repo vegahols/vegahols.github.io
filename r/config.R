@@ -7,14 +7,14 @@ CHART_CONFIG <- list(
   fontFamily = "Arial, sans-serif"
 )
 
-# Color palette - Modern, neutral, professional
+# Color palette - Modern pastel primary colors
 COLORS <- list(
-  primary = "#4A90E2",    # Clear blue
-  secondary = "#50C9C3",  # Teal
-  tertiary = "#7BC74D",   # Fresh green
-  accent = "#F5A623",     # Amber
-  success = "#5CB85C",    # Success green
-  info = "#5BC0DE"        # Info blue
+  primary = "#5B9BD5",    # Modern blue
+  secondary = "#FF6B6B",  # Coral red
+  tertiary = "#FFD166",   # Warm gold
+  accent = "#81C784",     # Soft green
+  success = "#6FCF97",    # Success green
+  info = "#B39DDB"        # Soft purple
 )
 
 # Typography

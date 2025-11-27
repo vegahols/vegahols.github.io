@@ -249,6 +249,7 @@ install.packages("highcharter")
 
 - [Highcharter Documentation](https://jkunst.com/highcharter/)
 - [Highcharts API Reference](https://api.highcharts.com/highcharts/)
+- [GitHub Pages Quickstart](https://docs.github.com/en/pages/quickstart)
 - [GitHub Pages Documentation](https://docs.github.com/pages)
 
 ## License
