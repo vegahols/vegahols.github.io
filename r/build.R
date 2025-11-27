@@ -5,23 +5,31 @@
 
 cat("🚀 Building all visualizations...\n\n")
 
-# Function to extract metadata from visualization file (chart or table)
+# Function to extract metadata from visualization file (chart, table, or map)
 extract_metadata <- function(file_path) {
   lines <- readLines(file_path, n = 20)
 
   metadata <- list()
 
-  # Try VIZ_* format first (for tables), then fall back to CHART_* format
-  title_line <- grep("VIZ_TITLE:|CHART_TITLE:", lines, value = TRUE)[1]
-  desc_line <- grep("VIZ_DESC:|CHART_DESC:", lines, value = TRUE)[1]
-  type_line <- grep("VIZ_TYPE:|CHART_TYPE:", lines, value = TRUE)[1]
-  file_line <- grep("VIZ_FILE:|CHART_FILE:", lines, value = TRUE)[1]
+  # Try different metadata formats: MAP_*, VIZ_* (for tables), CHART_*
+  title_line <- grep("MAP_TITLE:|VIZ_TITLE:|CHART_TITLE:", lines, value = TRUE)[1]
+  desc_line <- grep("MAP_DESC:|VIZ_DESC:|CHART_DESC:", lines, value = TRUE)[1]
+  type_line <- grep("MAP_TYPE:|VIZ_TYPE:|CHART_TYPE:", lines, value = TRUE)[1]
+  file_line <- grep("MAP_FILE:|VIZ_FILE:|CHART_FILE:", lines, value = TRUE)[1]
 
-  metadata$title <- gsub(".*(VIZ_TITLE|CHART_TITLE):\\s*", "", title_line)
-  metadata$desc <- gsub(".*(VIZ_DESC|CHART_DESC):\\s*", "", desc_line)
-  metadata$type <- gsub(".*(VIZ_TYPE|CHART_TYPE):\\s*", "", type_line)
-  metadata$file <- gsub(".*(VIZ_FILE|CHART_FILE):\\s*", "", file_line)
-  metadata$category <- ifelse(grepl("Table", metadata$type), "table", "chart")
+  metadata$title <- gsub(".*(MAP_TITLE|VIZ_TITLE|CHART_TITLE):\\s*", "", title_line)
+  metadata$desc <- gsub(".*(MAP_DESC|VIZ_DESC|CHART_DESC):\\s*", "", desc_line)
+  metadata$type <- gsub(".*(MAP_TYPE|VIZ_TYPE|CHART_TYPE):\\s*", "", type_line)
+  metadata$file <- gsub(".*(MAP_FILE|VIZ_FILE|CHART_FILE):\\s*", "", file_line)
+
+  # Determine category
+  if (grepl("MAP_", paste(lines, collapse = " "))) {
+    metadata$category <- "map"
+  } else if (grepl("Table", metadata$type)) {
+    metadata$category <- "table"
+  } else {
+    metadata$category <- "chart"
+  }
 
   metadata
 }
@@ -74,11 +82,41 @@ if (length(table_files) > 0) {
   }
 }
 
+# Discover all map files
+map_files <- list.files("r/maps", pattern = "\\.R$", full.names = TRUE)
+maps_metadata <- list()
+
+# Generate each map and collect metadata
+if (length(map_files) > 0) {
+  cat("\nMaps:\n")
+  for (map_file in map_files) {
+    cat(paste("  Generating:", basename(map_file), "\n"))
+
+    # Extract metadata
+    metadata <- extract_metadata(map_file)
+    maps_metadata[[length(maps_metadata) + 1]] <- metadata
+
+    # Source and run map
+    source(map_file)
+    map_name <- gsub("\\.R$", "", basename(map_file))
+    func_name <- paste0("generate_", map_name, "_chart")
+
+    if (exists(func_name)) {
+      do.call(func_name, list())
+    }
+  }
+}
+
 cat("\n")
 
-# Auto-generate index page from discovered charts and tables
+# Auto-generate index page from discovered charts, tables, and maps
 generate_card <- function(viz, category = "chart") {
-  button_text <- ifelse(category == "chart", "View Full Chart", "View Full Table")
+  button_text <- switch(category,
+    "chart" = "View Full Chart",
+    "table" = "View Full Table",
+    "map" = "View Full Map",
+    "View"
+  )
 
   sprintf('
       <div class="card">
@@ -117,6 +155,13 @@ charts_html <- paste(sapply(charts_metadata, function(c) generate_card(c, "chart
 # Generate table cards
 tables_html <- if (length(tables_metadata) > 0) {
   paste(sapply(tables_metadata, function(t) generate_card(t, "table")), collapse = "\n")
+} else {
+  ""
+}
+
+# Generate map cards
+maps_html <- if (length(maps_metadata) > 0) {
+  paste(sapply(maps_metadata, function(m) generate_card(m, "map")), collapse = "\n")
 } else {
   ""
 }
@@ -283,10 +328,19 @@ index_html <- paste0('<!DOCTYPE html>
     </section>
 
 ', if (tables_html != "") paste0('
-    <section>
+    <section style="margin-bottom: 2rem;">
       <h2 style="color: #2c3e50; font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem;">Tables</h2>
       <div class="grid">
 ', tables_html, '
+      </div>
+    </section>
+') else '', '
+
+', if (maps_html != "") paste0('
+    <section style="margin-bottom: 2rem;">
+      <h2 style="color: #2c3e50; font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem;">Maps</h2>
+      <div class="grid">
+', maps_html, '
       </div>
     </section>
 ') else '', '
@@ -324,5 +378,6 @@ writeLines(index_html, "docs/index.html")
 cat("✓ index.html generated\n")
 
 cat("\nAll visualizations built successfully!\n")
-cat(sprintf("   %d charts, %d tables\n", length(charts_metadata), length(tables_metadata)))
+cat(sprintf("   %d charts, %d tables, %d maps\n",
+    length(charts_metadata), length(tables_metadata), length(maps_metadata)))
 cat("Ready to commit and push to GitHub Pages\n")
