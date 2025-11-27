@@ -64,16 +64,25 @@ get_table_css <- function() {
 get_grid_pro_config <- function(page_size = 10) {
   list(
     columnDefaults = list(
-      sorting = list(sortable = TRUE),
-      filtering = list(enabled = TRUE, inline = FALSE),
-      cells = list(editable = FALSE)
+      filtering = list(enabled = TRUE)
     ),
     pagination = list(
       enabled = TRUE,
-      limit = page_size,
-      limitOptions = c(5, 10, 25, 50)
-    ),
-    credits = list(enabled = FALSE)
+      pageSize = page_size,
+      controls = list(
+        pageSizeSelector = list(
+          enabled = TRUE,
+          options = c(5, 10, 25, 50)
+        ),
+        pageInfo = TRUE,
+        firstLastButtons = TRUE,
+        previousNextButtons = TRUE,
+        pageButtons = list(
+          enabled = TRUE,
+          count = 7
+        )
+      )
+    )
   )
 }
 

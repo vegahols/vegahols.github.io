@@ -36,15 +36,14 @@ generate_customers_table <- function() {
   # Format revenue column
   customers$Revenue <- paste0("$", format(customers$Revenue, big.mark = ","))
 
-  # Define Grid Pro columns with formatters
+  # Define Grid Pro columns
   columns <- list(
-    list(id = "Company", header = list(format = "Company")),
-    list(id = "Contact", header = list(format = "Contact")),
-    list(id = "Revenue", header = list(format = "Revenue")),
-    list(id = "Region", header = list(format = "Region")),
+    list(id = "Company"),
+    list(id = "Contact"),
+    list(id = "Revenue"),
+    list(id = "Region"),
     list(
       id = "Status",
-      header = list(format = "Status"),
       formatter = 'function(cell) {
         const value = cell.value;
         const color = value === "Active" ? "#5CB85C" : "#F0AD4E";

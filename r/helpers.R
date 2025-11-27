@@ -107,9 +107,9 @@ generate_table_html <- function(title, subtitle, data, columns, filename, page_s
 <head>
   <meta charset="utf-8"/>
   <title>%s</title>
-  <link rel="stylesheet" href="https://code.highcharts.com/datagrid/css/datagrid.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@highcharts/grid-pro/css/grid-pro.css" />
   <style>%s</style>
-  <script src="https://code.highcharts.com/datagrid/datagrid.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@highcharts/grid-pro/grid-pro.js"></script>
 </head>
 <body>
   <div id="container">
@@ -124,16 +124,13 @@ generate_table_html <- function(title, subtitle, data, columns, filename, page_s
   <script>
     const data = %s;
 
-    const grid = DataGrid.dataGrid("grid", {
+    const grid = Grid.grid("grid", {
       dataTable: {
         columns: data
       },
       columnDefaults: %s,
-      rendering: {
-        columns: %s
-      },
-      pagination: %s,
-      credits: %s
+      columns: %s,
+      pagination: %s
     });
 
     %s
@@ -148,7 +145,6 @@ generate_table_html <- function(title, subtitle, data, columns, filename, page_s
     jsonlite::toJSON(config$columnDefaults, auto_unbox = TRUE),
     columns_json,
     jsonlite::toJSON(config$pagination, auto_unbox = TRUE),
-    jsonlite::toJSON(config$credits, auto_unbox = TRUE),
     download_fn
   )
 }
