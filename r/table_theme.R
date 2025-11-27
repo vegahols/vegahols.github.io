@@ -37,7 +37,7 @@ get_table_css <- function() {
   }
   .btn {
     padding: 8px 16px;
-    background-color: #4A90E2;
+    background-color: #2c3e50;
     color: white;
     border: none;
     border-radius: 6px;
@@ -47,7 +47,7 @@ get_table_css <- function() {
     transition: background-color 0.2s;
   }
   .btn:hover {
-    background-color: #357ABD;
+    background-color: #1a252f;
   }
   #grid {
     border: 1px solid #e8ecef;
