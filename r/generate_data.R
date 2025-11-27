@@ -84,16 +84,15 @@ hc <- highchart() %>%
     enabled = TRUE,
     buttons = list(
       contextButton = list(
-        menuItems = c("downloadPNG", "downloadJPEG", "downloadPDF", "downloadSVG"),
         theme = list(
           fill = "#ffffff",
-          stroke = "#e0e0e0",
-          style = list(
-            fontSize = "13px",
-            fontWeight = "400"
-          )
+          stroke = "#e0e0e0"
         )
       )
+    ),
+    menuItemStyle = list(
+      fontSize = "13px",
+      fontWeight = "400"
     )
   )
 
