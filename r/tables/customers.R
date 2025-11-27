@@ -6,7 +6,6 @@
 # Customer Table using Highcharts Grid Pro
 # Displays customer information with sorting, filtering, and pagination
 
-source("r/table_theme.R")
 source("r/helpers.R")
 
 generate_customers_table <- function() {
@@ -32,156 +31,40 @@ generate_customers_table <- function() {
                "Pending", "Active", "Active", "Active", "Pending")
   )
 
-  # Convert data to Grid Pro format (column-based)
-  data_json <- jsonlite::toJSON(customers, dataframe = "columns", auto_unbox = FALSE)
+  # Define column configurations
+  columns <- list(
+    list(
+      id = "Company",
+      header = list(format = "Company Name")
+    ),
+    list(
+      id = "Contact",
+      header = list(format = "Contact Person")
+    ),
+    list(
+      id = "Revenue",
+      header = list(format = "Revenue"),
+      formatter = 'function() { return "$" + this.value.toLocaleString(); }'
+    ),
+    list(
+      id = "Region",
+      header = list(format = "Region")
+    ),
+    list(
+      id = "Status",
+      header = list(format = "Status")
+    )
+  )
 
-  # Create HTML with Grid Pro
-  html_content <- sprintf('<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8"/>
-  <title>Customer Overview</title>
-  <link rel="stylesheet" href="https://code.highcharts.com/dashboards/css/datagrid.css">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    body {
-      background-color: white;
-      font-family: Arial, sans-serif;
-      padding: 20px;
-    }
-    #container {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-    h1 {
-      color: #2c3e50;
-      font-size: 24px;
-      font-weight: 600;
-      margin-bottom: 8px;
-    }
-    .subtitle {
-      color: #7f8c8d;
-      font-size: 14px;
-      margin-bottom: 20px;
-    }
-    .controls {
-      margin-bottom: 15px;
-    }
-    .btn {
-      padding: 8px 16px;
-      background-color: #4A90E2;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 14px;
-      font-weight: 500;
-      transition: background-color 0.2s;
-    }
-    .btn:hover {
-      background-color: #357ABD;
-    }
-    #grid {
-      border: 1px solid #e8ecef;
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-    }
-  </style>
-  <script src="https://code.highcharts.com/dashboards/datagrid.js"></script>
-</head>
-<body>
-  <div id="container">
-    <h1>Customer Overview</h1>
-    <p class="subtitle">Search, sort, and filter customer data</p>
-    <div class="controls">
-      <button class="btn" onclick="downloadCSV()">Download CSV</button>
-    </div>
-    <div id="grid"></div>
-  </div>
-
-  <script>
-    const data = %s;
-
-    const grid = DataGrid.grid("grid", {
-      dataTable: {
-        columns: data
-      },
-      columnDefaults: {
-        sorting: {
-          sortable: true
-        },
-        filtering: {
-          enabled: true,
-          inline: false
-        },
-        cells: {
-          editable: false
-        }
-      },
-      rendering: {
-        columns: [{
-          id: "Company",
-          header: {
-            format: "Company Name"
-          }
-        }, {
-          id: "Contact",
-          header: {
-            format: "Contact Person"
-          }
-        }, {
-          id: "Revenue",
-          header: {
-            format: "Revenue"
-          },
-          cells: {
-            formatter: function() {
-              return "$" + this.value.toLocaleString();
-            }
-          }
-        }, {
-          id: "Region",
-          header: {
-            format: "Region"
-          }
-        }, {
-          id: "Status",
-          header: {
-            format: "Status"
-          }
-        }]
-      },
-      pagination: {
-        enabled: true,
-        limit: 10,
-        limitOptions: [5, 10, 25, 50]
-      },
-      credits: {
-        enabled: false
-      }
-    });
-
-    // CSV Download Function
-    function downloadCSV() {
-      if (grid && grid.dataTable) {
-        const csv = grid.dataTable.getCSV();
-        const blob = new Blob([csv], { type: "text/csv" });
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = "customers-export.csv";
-        a.click();
-        window.URL.revokeObjectURL(url);
-      }
-    }
-  </script>
-</body>
-</html>', data_json)
+  # Generate table HTML using helper
+  html_content <- generate_table_html(
+    title = "Customer Overview",
+    subtitle = "Search, sort, and filter customer data",
+    data = customers,
+    columns = columns,
+    filename = "customers-export",
+    page_size = 10
+  )
 
   # Save table
   save_table(html_content, "customers.html")
