@@ -54,54 +54,6 @@ get_table_css <- function() {
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-    background-color: white;
-  }
-  /* Force white/light theme for Grid Pro */
-  #grid,
-  #grid * {
-    background-color: white !important;
-    color: #2c3e50 !important;
-  }
-  /* Header row styling */
-  #grid tr:first-child,
-  #grid thead,
-  #grid th {
-    background-color: #f8f9fa !important;
-    color: #2c3e50 !important;
-    font-weight: 600 !important;
-    border-bottom: 2px solid #e8ecef !important;
-  }
-  /* Table cells */
-  #grid td {
-    border-bottom: 1px solid #f0f0f0 !important;
-    padding: 12px !important;
-  }
-  /* Row hover effect */
-  #grid tr:hover {
-    background-color: #f8f9fa !important;
-  }
-  /* Pagination controls */
-  #grid button,
-  #grid select,
-  #grid input {
-    background-color: white !important;
-    color: #2c3e50 !important;
-    border: 1px solid #d0d0d0 !important;
-    padding: 6px 12px !important;
-    border-radius: 4px !important;
-    cursor: pointer !important;
-  }
-  #grid button:hover {
-    background-color: #f0f0f0 !important;
-  }
-  #grid button:disabled {
-    opacity: 0.5 !important;
-    cursor: not-allowed !important;
-  }
-  /* Pagination text */
-  #grid .highcharts-datagrid-pagination,
-  #grid .highcharts-datagrid-pagination * {
-    color: #2c3e50 !important;
   }'
 }
 
