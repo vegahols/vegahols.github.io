@@ -20,10 +20,42 @@ data <- data.frame(
 
 # Create Highcharts line chart using highcharter
 hc <- highchart() %>%
-  hc_title(text = "Monthly Sales 2024") %>%
-  hc_subtitle(text = "Data generated with R, visualized with Highcharts") %>%
-  hc_xAxis(categories = months) %>%
-  hc_yAxis(title = list(text = "Units")) %>%
+  hc_chart(
+    backgroundColor = "#ffffff",
+    style = list(
+      fontFamily = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif"
+    )
+  ) %>%
+  hc_title(
+    text = "Monthly Sales 2024",
+    style = list(
+      fontSize = "24px",
+      fontWeight = "600",
+      color = "#2c3e50"
+    )
+  ) %>%
+  hc_subtitle(
+    text = "Data generated with R, visualized with Highcharts",
+    style = list(
+      fontSize = "14px",
+      color = "#7f8c8d"
+    )
+  ) %>%
+  hc_xAxis(
+    categories = months,
+    labels = list(
+      style = list(fontSize = "13px", color = "#34495e")
+    )
+  ) %>%
+  hc_yAxis(
+    title = list(
+      text = "Units",
+      style = list(fontSize = "13px", color = "#34495e")
+    ),
+    labels = list(
+      style = list(fontSize = "13px", color = "#34495e")
+    )
+  ) %>%
   hc_add_series(
     name = "Sales",
     data = sales,
@@ -37,13 +69,33 @@ hc <- highchart() %>%
   hc_tooltip(
     crosshairs = TRUE,
     shared = TRUE,
-    borderWidth = 2
+    borderWidth = 2,
+    style = list(fontSize = "13px")
   ) %>%
-  hc_chart(
-    backgroundColor = "#ffffff"
+  hc_legend(
+    itemStyle = list(
+      fontSize = "13px",
+      fontWeight = "400",
+      color = "#34495e"
+    )
   ) %>%
   hc_credits(enabled = FALSE) %>%
-  hc_exporting(enabled = TRUE)
+  hc_exporting(
+    enabled = TRUE,
+    buttons = list(
+      contextButton = list(
+        menuItems = c("downloadPNG", "downloadJPEG", "downloadPDF", "downloadSVG"),
+        theme = list(
+          fill = "#ffffff",
+          stroke = "#e0e0e0",
+          style = list(
+            fontSize = "13px",
+            fontWeight = "400"
+          )
+        )
+      )
+    )
+  )
 
 # Save as HTML file
 # Change to docs directory first for correct path resolution
