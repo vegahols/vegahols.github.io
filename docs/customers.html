@@ -1,96 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
+<meta charset="utf-8"/>
+<style>body{background-color:white;}</style>
+<script src="lib/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<link href="lib/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="lib/datatables-binding-0.31/datatables.js"></script>
+<script src="lib/jquery-3.6.1/jquery-3.6.1.min.js"></script>
+<link href="lib/dt-core-1.13.6/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="lib/dt-core-1.13.6/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="lib/dt-core-1.13.6/js/jquery.dataTables.min.js"></script>
+<link href="lib/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet" />
+<script src="lib/crosstalk-1.2.1/js/crosstalk.min.js"></script>
   <title>Customer Overview</title>
-  <link rel="stylesheet" href="https://code.highcharts.com/datagrid/css/datagrid.css">
-  <style>* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  body {
-    background-color: white;
-    font-family: Arial, sans-serif;
-    padding: 20px;
-  }
-  #container {
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-  h1 {
-    color: #2c3e50;
-    font-size: 24px;
-    font-weight: 600;
-    margin-bottom: 8px;
-  }
-  .subtitle {
-    color: #7f8c8d;
-    font-size: 14px;
-    margin-bottom: 20px;
-  }
-  .controls {
-    margin-bottom: 15px;
-  }
-  .btn {
-    padding: 8px 16px;
-    background-color: #4A90E2;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 500;
-    transition: background-color 0.2s;
-  }
-  .btn:hover {
-    background-color: #357ABD;
-  }
-  #grid {
-    border: 1px solid #e8ecef;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-  }</style>
-  <script src="https://code.highcharts.com/datagrid/datagrid.js"></script>
 </head>
 <body>
-  <div id="container">
-    <h1>Customer Overview</h1>
-    <p class="subtitle">Search, sort, and filter customer data</p>
-    <div class="controls">
-      <button class="btn" onclick="downloadCSV()">Download CSV</button>
-    </div>
-    <div id="grid"></div>
-  </div>
-
-  <script>
-    const data = {"Company":["Acme Corp","TechStart Inc","Global Solutions","Innovation Labs","Digital Ventures","Future Systems","Smart Analytics","Data Insights","Cloud Nine","Peak Performance","Next Gen Tech","Prime Solutions","Elite Consulting","Apex Industries","Summit Corp"],"Contact":["John Smith","Sarah Johnson","Mike Chen","Emily Brown","David Lee","Lisa Anderson","Robert Taylor","Maria Garcia","James Wilson","Patricia Martinez","Michael Davis","Jennifer Rodriguez","William Lopez","Elizabeth Lee","Christopher Kim"],"Revenue":[125000,89000,156000,67000,198000,143000,92000,178000,134000,156000,98000,187000,112000,165000,145000],"Region":["North","East","West","South","North","East","West","South","North","East","West","South","North","East","West"],"Status":["Active","Active","Active","Pending","Active","Active","Pending","Active","Active","Active","Pending","Active","Active","Active","Pending"]};
-
-    const grid = new DataGrid.DataGrid("grid", {
-      dataTable: {
-        columns: data
-      },
-      columnDefaults: {"sorting":{"sortable":true},"filtering":{"enabled":true,"inline":false},"cells":{"editable":false}},
-      rendering: {
-        columns: [{"id":"Company","header":{"format":"Company Name"}},{"id":"Contact","header":{"format":"Contact Person"}},{"id": "Revenue", "cells": { "formatter": function() { return "$" + this.value.toLocaleString(); } },"header":{"format":"Revenue"}},{"id":"Region","header":{"format":"Region"}},{"id":"Status","header":{"format":"Status"}}]
-      },
-      pagination: {"enabled":true,"limit":10,"limitOptions":[5,10,25,50]},
-      credits: {"enabled":false}
-    });
-
-    function downloadCSV() {
-    if (grid && grid.dataTable) {
-      const csv = grid.dataTable.getCSV();
-      const blob = new Blob([csv], { type: "text/csv" });
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "customers-export.csv";
-      a.click();
-      window.URL.revokeObjectURL(url);
-    }
-  }
-  </script>
+<div id="htmlwidget_container">
+  <div class="datatables html-widget html-fill-item" id="htmlwidget-2893e55b368f0a46ec55" style="width:100%;height:auto;"></div>
+</div>
+<script type="application/json" data-for="htmlwidget-2893e55b368f0a46ec55">{"x":{"filter":"none","vertical":false,"caption":"<caption style=\"caption-side: top; text-align: left;\">\n  <h1 style=\"color: #2c3e50; font-size: 24px; font-weight: 600; margin-bottom: 8px;\">Customer Overview<\/h1>\n  <p style=\"color: #7f8c8d; font-size: 14px; margin-bottom: 20px;\">Search, sort, and filter customer data<\/p>\n<\/caption>","data":[["Acme Corp","TechStart Inc","Global Solutions","Innovation Labs","Digital Ventures","Future Systems","Smart Analytics","Data Insights","Cloud Nine","Peak Performance","Next Gen Tech","Prime Solutions","Elite Consulting","Apex Industries","Summit Corp"],["John Smith","Sarah Johnson","Mike Chen","Emily Brown","David Lee","Lisa Anderson","Robert Taylor","Maria Garcia","James Wilson","Patricia Martinez","Michael Davis","Jennifer Rodriguez","William Lopez","Elizabeth Lee","Christopher Kim"],["$125,000","$ 89,000","$156,000","$ 67,000","$198,000","$143,000","$ 92,000","$178,000","$134,000","$156,000","$ 98,000","$187,000","$112,000","$165,000","$145,000"],["North","East","West","South","North","East","West","South","North","East","West","South","North","East","West"],["Active","Active","Active","Pending","Active","Active","Pending","Active","Active","Active","Pending","Active","Active","Active","Pending"]],"container":"<table class=\"cell-border stripe\">\n  <thead>\n    <tr>\n      <th>Company<\/th>\n      <th>Contact<\/th>\n      <th>Revenue<\/th>\n      <th>Region<\/th>\n      <th>Status<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":10,"lengthMenu":[5,10,25,50],"searching":true,"ordering":true,"dom":"Blfrtip","buttons":["csv"],"columnDefs":[{"className":"dt-center","targets":[3,4]},{"name":"Company","targets":0},{"name":"Contact","targets":1},{"name":"Revenue","targets":2},{"name":"Region","targets":3},{"name":"Status","targets":4}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<script type="application/htmlwidget-sizing" data-for="htmlwidget-2893e55b368f0a46ec55">{"viewer":{"width":"100%","height":"auto","padding":15,"fill":true},"browser":{"width":"100%","height":"auto","padding":40,"fill":false}}</script>
 </body>
 </html>

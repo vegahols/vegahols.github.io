@@ -3,9 +3,12 @@
 # VIZ_TYPE: Data Table
 # VIZ_FILE: customers.html
 
-# Customer Table using Highcharts Grid Pro
+# Customer Table using DT (DataTables for R)
 # Displays customer information with sorting, filtering, and pagination
 
+library(DT)
+library(htmlwidgets)
+source("r/config.R")
 source("r/helpers.R")
 
 generate_customers_table <- function() {
@@ -31,43 +34,45 @@ generate_customers_table <- function() {
                "Pending", "Active", "Active", "Active", "Pending")
   )
 
-  # Define column configurations
-  columns <- list(
-    list(
-      id = "Company",
-      header = list(format = "Company Name")
+  # Format revenue column
+  customers$Revenue <- paste0("$", format(customers$Revenue, big.mark = ","))
+
+  # Create DT table with sorting, filtering, and pagination
+  dt <- datatable(
+    customers,
+    options = list(
+      pageLength = 10,
+      lengthMenu = c(5, 10, 25, 50),
+      searching = TRUE,
+      ordering = TRUE,
+      dom = 'Blfrtip',
+      buttons = c('csv'),
+      columnDefs = list(
+        list(className = 'dt-center', targets = c(3, 4))
+      )
     ),
-    list(
-      id = "Contact",
-      header = list(format = "Contact Person")
-    ),
-    list(
-      id = "Revenue",
-      header = list(format = "Revenue"),
-      formatter = 'function() { return "$" + this.value.toLocaleString(); }'
-    ),
-    list(
-      id = "Region",
-      header = list(format = "Region")
-    ),
-    list(
-      id = "Status",
-      header = list(format = "Status")
+    class = 'cell-border stripe',
+    rownames = FALSE,
+    caption = htmltools::tags$caption(
+      style = 'caption-side: top; text-align: left;',
+      htmltools::h1(style = 'color: #2c3e50; font-size: 24px; font-weight: 600; margin-bottom: 8px;', 'Customer Overview'),
+      htmltools::p(style = 'color: #7f8c8d; font-size: 14px; margin-bottom: 20px;', 'Search, sort, and filter customer data')
     )
   )
 
-  # Generate table HTML using helper
-  html_content <- generate_table_html(
-    title = "Customer Overview",
-    subtitle = "Search, sort, and filter customer data",
-    data = customers,
-    columns = columns,
-    filename = "customers-export",
-    page_size = 10
-  )
-
   # Save table
-  save_table(html_content, "customers.html")
+  original_dir <- getwd()
+  dir.create(OUTPUT_DIR, showWarnings = FALSE)
+  setwd(OUTPUT_DIR)
+
+  tryCatch({
+    saveWidget(dt, file = "customers.html", selfcontained = FALSE, libdir = LIB_DIR, title = "Customer Overview")
+    cat(paste("✓ customers.html generated\n"))
+  }, error = function(e) {
+    cat(paste("✗ Error generating customers.html:", e$message, "\n"))
+  }, finally = {
+    setwd(original_dir)
+  })
 }
 
 # Run if executed directly
