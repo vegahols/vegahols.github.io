@@ -3,80 +3,212 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Highcharts Dashboard</title>
+  <title>Analytics Dashboard</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      background: #f5f7fa;
       min-height: 100vh;
-      padding: 2rem;
+      padding: 2rem 1rem;
     }
     .container { max-width: 1200px; margin: 0 auto; }
-    h1 { color: white; margin-bottom: 0.5rem; font-size: 2.5rem; }
-    .subtitle { color: rgba(255,255,255,0.9); margin-bottom: 2rem; font-size: 1.1rem; }
+    header {
+      background: white;
+      padding: 2rem;
+      border-radius: 8px;
+      margin-bottom: 2rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
+    h1 {
+      color: #2c3e50;
+      margin-bottom: 0.5rem;
+      font-size: 2rem;
+      font-weight: 600;
+    }
+    .subtitle {
+      color: #7f8c8d;
+      font-size: 1rem;
+    }
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
       gap: 1.5rem;
     }
     .card {
       background: white;
-      padding: 2rem;
-      border-radius: 12px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-      transition: transform 0.2s;
-      text-decoration: none;
-      color: inherit;
-      display: block;
+      padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+      border: 1px solid #e8ecef;
     }
-    .card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
     }
-    .card h2 { color: #2c3e50; margin-bottom: 0.5rem; font-size: 1.5rem; }
-    .card p { color: #7f8c8d; font-size: 0.95rem; line-height: 1.5; }
-    .chart-type {
-      display: inline-block;
-      background: #f0f0f0;
+    .card h2 {
+      color: #2c3e50;
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+    .card-type {
+      background: #f0f3f5;
+      color: #6c7a89;
       padding: 0.25rem 0.75rem;
-      border-radius: 12px;
-      font-size: 0.8rem;
-      color: #666;
-      margin-top: 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 500;
     }
-    .footer {
-      text-align: center;
+    .card-actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+    .btn {
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      border: none;
+      font-size: 0.875rem;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: all 0.2s;
+      font-weight: 500;
+    }
+    .btn-primary {
+      background: #4A90E2;
       color: white;
+    }
+    .btn-primary:hover {
+      background: #357ABD;
+    }
+    .btn-secondary {
+      background: #f0f3f5;
+      color: #6c7a89;
+    }
+    .btn-secondary:hover {
+      background: #e4e9ed;
+    }
+    .embed-code {
+      display: none;
+      margin-top: 1rem;
+      padding: 0.75rem;
+      background: #f8f9fa;
+      border: 1px solid #e8ecef;
+      border-radius: 6px;
+      font-family: "Courier New", monospace;
+      font-size: 0.75rem;
+      color: #2c3e50;
+      word-break: break-all;
+      position: relative;
+    }
+    .embed-code.show { display: block; }
+    .copy-btn {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      background: #4A90E2;
+      color: white;
+      border: none;
+      padding: 0.25rem 0.75rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      cursor: pointer;
+    }
+    .copy-btn:hover { background: #357ABD; }
+    .copy-btn.copied { background: #5CB85C; }
+    footer {
+      text-align: center;
       margin-top: 3rem;
-      opacity: 0.9;
+      color: #95a5a6;
+      font-size: 0.875rem;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>📊 Analytics Dashboard</h1>
-    <p class="subtitle">Interactive data visualizations powered by R and Highcharts</p>
+    <header>
+      <h1>Analytics Dashboard</h1>
+      <p class="subtitle">Interactive data visualizations</p>
+    </header>
+
     <div class="grid">
-      <a href="sales.html" class="card">
-        <h2>📈 Sales Trend</h2>
-        <p>Monthly sales performance tracking over time</p>
-        <span class="chart-type">Line Chart</span>
-      </a>
-      <a href="revenue.html" class="card">
-        <h2>💰 Revenue Comparison</h2>
-        <p>Quarterly revenue analysis and comparison</p>
-        <span class="chart-type">Bar Chart</span>
-      </a>
-      <a href="market.html" class="card">
-        <h2>🥧 Market Share</h2>
-        <p>Product market share distribution breakdown</p>
-        <span class="chart-type">Pie Chart</span>
-      </a>
+      <div class="card">
+        <div class="card-header">
+          <h2>Sales Trend</h2>
+          <span class="card-type">Line Chart</span>
+        </div>
+        <p style="color: #7f8c8d; font-size: 0.9rem; margin-bottom: 0.5rem;">Monthly sales performance</p>
+        <div class="card-actions">
+          <a href="sales.html" class="btn btn-primary" target="_blank">View Chart</a>
+          <button class="btn btn-secondary" onclick="toggleEmbed('sales')">Embed Code</button>
+        </div>
+        <div class="embed-code" id="embed-sales">
+          <button class="copy-btn" onclick="copyEmbed('sales')">Copy</button>
+          <code>&lt;iframe src="https://vegahols.github.io/sales.html" width="100%" height="500" frameborder="0"&gt;&lt;/iframe&gt;</code>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h2>Revenue Comparison</h2>
+          <span class="card-type">Bar Chart</span>
+        </div>
+        <p style="color: #7f8c8d; font-size: 0.9rem; margin-bottom: 0.5rem;">Quarterly revenue analysis</p>
+        <div class="card-actions">
+          <a href="revenue.html" class="btn btn-primary" target="_blank">View Chart</a>
+          <button class="btn btn-secondary" onclick="toggleEmbed('revenue')">Embed Code</button>
+        </div>
+        <div class="embed-code" id="embed-revenue">
+          <button class="copy-btn" onclick="copyEmbed('revenue')">Copy</button>
+          <code>&lt;iframe src="https://vegahols.github.io/revenue.html" width="100%" height="500" frameborder="0"&gt;&lt;/iframe&gt;</code>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h2>Market Share</h2>
+          <span class="card-type">Pie Chart</span>
+        </div>
+        <p style="color: #7f8c8d; font-size: 0.9rem; margin-bottom: 0.5rem;">Product distribution breakdown</p>
+        <div class="card-actions">
+          <a href="market.html" class="btn btn-primary" target="_blank">View Chart</a>
+          <button class="btn btn-secondary" onclick="toggleEmbed('market')">Embed Code</button>
+        </div>
+        <div class="embed-code" id="embed-market">
+          <button class="copy-btn" onclick="copyEmbed('market')">Copy</button>
+          <code>&lt;iframe src="https://vegahols.github.io/market.html" width="100%" height="500" frameborder="0"&gt;&lt;/iframe&gt;</code>
+        </div>
+      </div>
     </div>
-    <div class="footer">
-      <p>Generated with R + Highcharts • Updated automatically</p>
-    </div>
+
+    <footer>
+      <p>Generated with R + Highcharts</p>
+    </footer>
   </div>
+
+  <script>
+    function toggleEmbed(chart) {
+      const embed = document.getElementById("embed-" + chart);
+      embed.classList.toggle("show");
+    }
+
+    function copyEmbed(chart) {
+      const embed = document.getElementById("embed-" + chart);
+      const code = embed.querySelector("code").textContent;
+      const btn = embed.querySelector(".copy-btn");
+
+      navigator.clipboard.writeText(code).then(() => {
+        btn.textContent = "Copied!";
+        btn.classList.add("copied");
+        setTimeout(() => {
+          btn.textContent = "Copy";
+          btn.classList.remove("copied");
+        }, 2000);
+      });
+    }
+  </script>
 </body>
 </html>
