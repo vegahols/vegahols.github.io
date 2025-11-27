@@ -95,9 +95,7 @@ generate_norway_chart <- function() {
         colorAxis: {
           min: 0,
           stops: [
-            [0, "%s"],
-            [0.33, "%s"],
-            [0.67, "%s"],
+            [0, "#E3F2FD"],
             [1, "%s"]
           ]
         },
@@ -133,10 +131,7 @@ generate_norway_chart <- function() {
 </body>
 </html>',
     jsonlite::toJSON(map_data, auto_unbox = TRUE),
-    COLORS$accent,
-    COLORS$primary,
-    COLORS$tertiary,
-    COLORS$secondary
+    COLORS$primary
   )
 
   # Save HTML file
