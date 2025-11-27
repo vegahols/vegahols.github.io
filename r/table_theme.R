@@ -98,8 +98,20 @@ get_grid_pro_config <- function(page_size = 10) {
 #' @return A string containing the JavaScript function
 get_csv_download_function <- function(filename) {
   sprintf('function downloadCSV() {
-    if (grid && grid.exporting) {
-      grid.exporting.downloadCSV();
+    if (grid && grid.dataTable) {
+      // Get CSV from the full dataTable (all filtered rows, all pages)
+      const csv = grid.dataTable.getCSV();
+
+      // Create blob and download
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "%s.csv";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
     }
   }', filename)
 }
