@@ -17,12 +17,13 @@ generate_market_chart <- function() {
   shares <- c(35, 25, 20, 12, 8)
 
   # Create data in format Highcharts expects for pie charts
+  # Use distinct colors: blue, coral, gold, green, purple
   pie_data <- lapply(seq_along(products), function(i) {
     list(
       name = products[i],
       y = shares[i],
       color = c(COLORS$primary, COLORS$secondary, COLORS$tertiary,
-                COLORS$accent, COLORS$success)[i]
+                COLORS$accent, COLORS$info)[i]
     )
   })
 

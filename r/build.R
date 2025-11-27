@@ -146,7 +146,6 @@ index_html <- paste0('<!DOCTYPE html>
     .chart-preview iframe {
       width: 100%;
       height: 100%;
-      pointer-events: none;
     }
     .card-type {
       background: #f0f3f5;

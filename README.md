@@ -7,6 +7,7 @@ A simple, no-build demo using R's official Highcharts wrapper (`highcharter`) to
 - **Official R wrapper** - Uses `highcharter` package for R-native workflow
 - **No build step** - Pure static files, push to deploy
 - **Developer friendly** - All chart config in R, single source of truth
+- **Auto-generated dashboard** - Index page with live chart previews and embed codes
 - **GitHub Pages ready** - Works out of the box
 - **Best practices** - Optimized library loading, clean structure
 
@@ -119,9 +120,10 @@ Charts use metadata comments for automatic index generation:
 1. **Automatic discovery** - `build.R` finds all charts in `r/charts/`
 2. **Metadata extraction** - Reads chart metadata from file comments
 3. **Chart generation** - Generates HTML for each chart
-4. **Auto-generated index** - Creates dashboard with all discovered charts
-5. **No manual config** - Just add chart files and run build
-6. **GitHub Pages serves** - Static files, no build process needed
+4. **Auto-generated index** - Creates dashboard with interactive chart previews
+5. **Interactive previews** - Each chart card shows a fully interactive 250px iframe preview
+6. **No manual config** - Just add chart files and run build
+7. **GitHub Pages serves** - Static files, no build process needed
 
 ## Customization
 
