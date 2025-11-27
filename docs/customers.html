@@ -85,8 +85,33 @@
 
     function downloadCSV() {
     if (grid && grid.dataTable) {
-      // Get CSV from the full dataTable (all filtered rows, all pages)
-      const csv = grid.dataTable.getCSV();
+      // Get all columns from dataTable
+      const columns = grid.dataTable.getColumns();
+      const columnNames = Object.keys(columns);
+
+      // Build CSV manually to ensure all rows are included
+      let csv = columnNames.join(",") + "\n";
+
+      // Get the row count from the first column
+      const rowCount = columns[columnNames[0]].length;
+
+      // Build each row
+      for (let i = 0; i < rowCount; i++) {
+        const row = columnNames.map(colName => {
+          let value = columns[colName][i];
+          // Handle null/undefined
+          if (value === null || value === undefined) {
+            value = "";
+          }
+          // Escape and quote if necessary
+          value = String(value);
+          if (value.includes(",") || value.includes("\"") || value.includes("\n")) {
+            value = "\"" + value.replace(/"/g, "\"\"") + "\"";
+          }
+          return value;
+        });
+        csv += row.join(",") + "\n";
+      }
 
       // Create blob and download
       const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
