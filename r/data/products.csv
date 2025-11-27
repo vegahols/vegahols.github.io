@@ -1,0 +1,16 @@
+ProductID,ProductName,Category,Price,Stock,Supplier
+P001,Laptop Pro 15,Electronics,1299.99,45,TechSupply Inc
+P002,Wireless Mouse,Electronics,29.99,156,TechSupply Inc
+P003,Office Chair Deluxe,Furniture,249.99,23,ComfortSeating Co
+P004,Standing Desk,Furniture,599.99,12,ComfortSeating Co
+P005,USB-C Cable,Electronics,19.99,234,TechSupply Inc
+P006,Monitor 27inch,Electronics,349.99,67,DisplayTech Ltd
+P007,Desk Lamp LED,Furniture,45.99,89,LightWorks Inc
+P008,Keyboard Mechanical,Electronics,129.99,78,TechSupply Inc
+P009,Notebook Set,Office Supplies,12.99,345,PaperPro Ltd
+P010,Pen Set Premium,Office Supplies,24.99,167,PaperPro Ltd
+P011,Webcam HD,Electronics,89.99,56,TechSupply Inc
+P012,Bookshelf,Furniture,179.99,34,ComfortSeating Co
+P013,File Cabinet,Furniture,299.99,18,ComfortSeating Co
+P014,Headphones Pro,Electronics,199.99,92,TechSupply Inc
+P015,Whiteboard,Office Supplies,79.99,41,PaperPro Ltd

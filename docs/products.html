@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>Product Inventory</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@highcharts/grid-pro/css/grid-pro.css" />
+  <style>* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  body {
+    background-color: white;
+    font-family: Arial, sans-serif;
+    padding: 20px;
+  }
+  #container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  h1 {
+    color: #2c3e50;
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .subtitle {
+    color: #7f8c8d;
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
+  .controls {
+    margin-bottom: 15px;
+  }
+  .btn {
+    padding: 8px 16px;
+    background-color: #2c3e50;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background-color 0.2s;
+  }
+  .btn:hover {
+    background-color: #1a252f;
+  }
+  #grid {
+    border: 1px solid #e8ecef;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  }</style>
+  <script src="https://cdn.jsdelivr.net/npm/@highcharts/grid-pro/grid-pro.js"></script>
+</head>
+<body>
+  <div id="container" class="highcharts-light">
+    <h1>Product Inventory</h1>
+    <p class="subtitle">Product catalog with pricing and stock levels</p>
+    <div class="controls">
+      <button class="btn" onclick="downloadCSV()">Download CSV</button>
+    </div>
+    <div id="grid"></div>
+  </div>
+
+  <script>
+    const data = {"ProductID":["P001","P002","P003","P004","P005","P006","P007","P008","P009","P010","P011","P012","P013","P014","P015"],"ProductName":["Laptop Pro 15","Wireless Mouse","Office Chair Deluxe","Standing Desk","USB-C Cable","Monitor 27inch","Desk Lamp LED","Keyboard Mechanical","Notebook Set","Pen Set Premium","Webcam HD","Bookshelf","File Cabinet","Headphones Pro","Whiteboard"],"Category":["Electronics","Electronics","Furniture","Furniture","Electronics","Electronics","Furniture","Electronics","Office Supplies","Office Supplies","Electronics","Furniture","Furniture","Electronics","Office Supplies"],"Price":["$1299.99","$  29.99","$ 249.99","$ 599.99","$  19.99","$ 349.99","$  45.99","$ 129.99","$  12.99","$  24.99","$  89.99","$ 179.99","$ 299.99","$ 199.99","$  79.99"],"Stock":[45,156,23,12,234,67,89,78,345,167,56,34,18,92,41],"Supplier":["TechSupply Inc","TechSupply Inc","ComfortSeating Co","ComfortSeating Co","TechSupply Inc","DisplayTech Ltd","LightWorks Inc","TechSupply Inc","PaperPro Ltd","PaperPro Ltd","TechSupply Inc","ComfortSeating Co","ComfortSeating Co","TechSupply Inc","PaperPro Ltd"]};
+
+    const grid = Grid.grid("grid", {
+      dataTable: {
+        columns: data
+      },
+      columnDefaults: {"filtering":{"enabled":true}},
+      columns: [{"id":"ProductID","width":80},{"id":"ProductName"},{"id":"Category"},{"id":"Price"},{"id": "Stock", "cells": { "formatter": function(cell) {
+        const value = cell.value;
+        const color = value > 100 ? "#5CB85C" : value > 50 ? "#F0AD4E" : "#D9534F";
+        const bgColor = value > 100 ? "#E8F5E9" : value > 50 ? "#FFF3E0" : "#FFEBEE";
+        return `<span style="background-color: ${bgColor}; color: ${color}; padding: 4px 12px; border-radius: 12px; font-weight: 500; font-size: 12px;">${value}</span>`;
+      } }},{"id":"Supplier"}],
+      pagination: {"enabled":true,"pageSize":10,"controls":{"pageSizeSelector":{"enabled":true,"options":[5,10,25,50]},"pageInfo":true,"firstLastButtons":true,"previousNextButtons":true,"pageButtons":{"enabled":true,"count":7}}},
+      credits: {"enabled":false}
+    });
+
+    function downloadCSV() {
+    if (grid && grid.exporting) {
+      grid.exporting.downloadCSV();
+    }
+  }
+  </script>
+</body>
+</html>
