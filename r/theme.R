@@ -19,6 +19,7 @@ apply_common_theme <- function(hc) {
       buttons = EXPORT_CONFIG$buttons,
       menuItemStyle = EXPORT_CONFIG$menuItemStyle
     )
+  # Note: Accessibility module is automatically included by highcharter
 }
 
 #' Apply title and subtitle styling

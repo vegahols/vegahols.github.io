@@ -6,6 +6,8 @@
   <script src="https://code.highcharts.com/highcharts.js"></script>
   <script src="https://code.highcharts.com/maps/modules/map.js"></script>
   <script src="https://code.highcharts.com/modules/exporting.js"></script>
+  <script src="https://code.highcharts.com/modules/export-data.js"></script>
+  <script src="https://code.highcharts.com/modules/accessibility.js"></script>
   <style>
     body {
       background-color: #ffffff;
@@ -89,6 +91,13 @@
         },
         exporting: {
           enabled: true
+        },
+        accessibility: {
+          enabled: true,
+          keyboardNavigation: {
+            enabled: true
+          },
+          description: "Map showing population distribution across Norwegian regions"
         }
       });
     })();

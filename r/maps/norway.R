@@ -6,11 +6,7 @@
 # Norway Population Map using Highcharts Maps
 # Displays population data by Norwegian regions with interactive features
 
-library(highcharter)
-library(htmlwidgets)
 source("r/config.R")
-source("r/theme.R")
-source("r/helpers.R")
 
 generate_norway_chart <- function() {
   # Regional population data (based on reference datasets.js)
@@ -41,6 +37,8 @@ generate_norway_chart <- function() {
   <script src="https://code.highcharts.com/highcharts.js"></script>
   <script src="https://code.highcharts.com/maps/modules/map.js"></script>
   <script src="https://code.highcharts.com/modules/exporting.js"></script>
+  <script src="https://code.highcharts.com/modules/export-data.js"></script>
+  <script src="https://code.highcharts.com/modules/accessibility.js"></script>
   <style>
     body {
       background-color: #ffffff;
@@ -124,6 +122,13 @@ generate_norway_chart <- function() {
         },
         exporting: {
           enabled: true
+        },
+        accessibility: {
+          enabled: true,
+          keyboardNavigation: {
+            enabled: true
+          },
+          description: "Map showing population distribution across Norwegian regions"
         }
       });
     })();
