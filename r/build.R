@@ -158,6 +158,7 @@ index_html <- paste0('<!DOCTYPE html>
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
       gap: 1.5rem;
+      grid-auto-rows: 1fr;
     }
     .card {
       background: white;
@@ -165,6 +166,9 @@ index_html <- paste0('<!DOCTYPE html>
       border-radius: 8px;
       box-shadow: 0 1px 3px rgba(0,0,0,0.08);
       border: 1px solid #e8ecef;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
     }
     .card-header {
       display: flex;
