@@ -168,7 +168,7 @@ index_html <- paste0('<!DOCTYPE html>
       border: 1px solid #e8ecef;
       display: flex;
       flex-direction: column;
-      height: 100%;
+      min-height: 450px;
     }
     .card-header {
       display: flex;
