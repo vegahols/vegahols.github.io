@@ -53,6 +53,20 @@
       font-size: 1.25rem;
       font-weight: 600;
     }
+    .chart-preview {
+      width: 100%;
+      height: 250px;
+      margin-bottom: 1rem;
+      border-radius: 6px;
+      overflow: hidden;
+      border: 1px solid #e8ecef;
+      background: #fafbfc;
+    }
+    .chart-preview iframe {
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
     .card-type {
       background: #f0f3f5;
       color: #6c7a89;
@@ -138,12 +152,15 @@
 
       <div class="card">
         <div class="card-header">
-          <h2>🥧 Market Share</h2>
+          <h2>Market Share</h2>
           <span class="card-type">Pie Chart</span>
         </div>
-        <p style="color: #7f8c8d; font-size: 0.9rem; margin-bottom: 0.5rem;">Product distribution breakdown</p>
+        <div class="chart-preview">
+          <iframe src="market.html" frameborder="0"></iframe>
+        </div>
+        <p style="color: #7f8c8d; font-size: 0.9rem; margin-bottom: 0.75rem;">Product distribution breakdown</p>
         <div class="card-actions">
-          <a href="market.html" class="btn btn-primary">View Chart</a>
+          <a href="market.html" class="btn btn-primary">View Full Chart</a>
           <button class="btn btn-secondary" onclick="toggleEmbed('market')">Embed Code</button>
         </div>
         <div class="embed-code" id="embed-market">
@@ -154,12 +171,15 @@
 
       <div class="card">
         <div class="card-header">
-          <h2>💰 Revenue Comparison</h2>
+          <h2>Revenue Comparison</h2>
           <span class="card-type">Bar Chart</span>
         </div>
-        <p style="color: #7f8c8d; font-size: 0.9rem; margin-bottom: 0.5rem;">Quarterly revenue analysis</p>
+        <div class="chart-preview">
+          <iframe src="revenue.html" frameborder="0"></iframe>
+        </div>
+        <p style="color: #7f8c8d; font-size: 0.9rem; margin-bottom: 0.75rem;">Quarterly revenue analysis</p>
         <div class="card-actions">
-          <a href="revenue.html" class="btn btn-primary">View Chart</a>
+          <a href="revenue.html" class="btn btn-primary">View Full Chart</a>
           <button class="btn btn-secondary" onclick="toggleEmbed('revenue')">Embed Code</button>
         </div>
         <div class="embed-code" id="embed-revenue">
@@ -170,12 +190,15 @@
 
       <div class="card">
         <div class="card-header">
-          <h2>📈 Sales Trend</h2>
+          <h2>Sales Trend</h2>
           <span class="card-type">Line Chart</span>
         </div>
-        <p style="color: #7f8c8d; font-size: 0.9rem; margin-bottom: 0.5rem;">Monthly sales performance</p>
+        <div class="chart-preview">
+          <iframe src="sales.html" frameborder="0"></iframe>
+        </div>
+        <p style="color: #7f8c8d; font-size: 0.9rem; margin-bottom: 0.75rem;">Monthly sales performance</p>
         <div class="card-actions">
-          <a href="sales.html" class="btn btn-primary">View Chart</a>
+          <a href="sales.html" class="btn btn-primary">View Full Chart</a>
           <button class="btn btn-secondary" onclick="toggleEmbed('sales')">Embed Code</button>
         </div>
         <div class="embed-code" id="embed-sales">

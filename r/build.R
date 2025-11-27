@@ -48,12 +48,15 @@ generate_card <- function(chart) {
   sprintf('
       <div class="card">
         <div class="card-header">
-          <h2>%s %s</h2>
+          <h2>%s</h2>
           <span class="card-type">%s</span>
         </div>
-        <p style="color: #7f8c8d; font-size: 0.9rem; margin-bottom: 0.5rem;">%s</p>
+        <div class="chart-preview">
+          <iframe src="%s" frameborder="0"></iframe>
+        </div>
+        <p style="color: #7f8c8d; font-size: 0.9rem; margin-bottom: 0.75rem;">%s</p>
         <div class="card-actions">
-          <a href="%s" class="btn btn-primary">View Chart</a>
+          <a href="%s" class="btn btn-primary">View Full Chart</a>
           <button class="btn btn-secondary" onclick="toggleEmbed(\'%s\')">Embed Code</button>
         </div>
         <div class="embed-code" id="embed-%s">
@@ -61,7 +64,9 @@ generate_card <- function(chart) {
           <code>&lt;iframe src="https://vegahols.github.io/%s" width="100%%" height="500" frameborder="0"&gt;&lt;/iframe&gt;</code>
         </div>
       </div>',
-    chart$icon, chart$title, chart$type, chart$desc,
+    chart$title, chart$type,
+    chart$file,
+    chart$desc,
     chart$file,
     gsub("\\.html$", "", chart$file),
     gsub("\\.html$", "", chart$file),
@@ -128,6 +133,20 @@ index_html <- paste0('<!DOCTYPE html>
       color: #2c3e50;
       font-size: 1.25rem;
       font-weight: 600;
+    }
+    .chart-preview {
+      width: 100%;
+      height: 250px;
+      margin-bottom: 1rem;
+      border-radius: 6px;
+      overflow: hidden;
+      border: 1px solid #e8ecef;
+      background: #fafbfc;
+    }
+    .chart-preview iframe {
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
     }
     .card-type {
       background: #f0f3f5;
