@@ -23,7 +23,7 @@ hc <- highchart() %>%
   hc_chart(
     backgroundColor = "#ffffff",
     style = list(
-      fontFamily = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif"
+      fontFamily = "Arial, sans-serif"
     )
   ) %>%
   hc_title(
