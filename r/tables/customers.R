@@ -4,7 +4,7 @@
 # VIZ_FILE: customers.html
 
 # Customer Table using Highcharts Grid Pro
-# Displays customer information in an interactive table
+# Displays customer information with sorting, filtering, and pagination
 
 source("r/table_theme.R")
 source("r/helpers.R")
@@ -15,14 +15,24 @@ generate_customers_table <- function() {
   set.seed(123)
 
   customers <- data.frame(
-    Name = c("Acme Corp", "TechStart Inc", "Global Solutions", "Innovation Labs", "Digital Ventures"),
-    Contact = c("John Smith", "Sarah Johnson", "Mike Chen", "Emily Brown", "David Lee"),
-    Revenue = c(125000, 89000, 156000, 67000, 198000),
-    Region = c("North", "East", "West", "South", "North"),
-    Status = c("Active", "Active", "Active", "Pending", "Active")
+    Company = c("Acme Corp", "TechStart Inc", "Global Solutions", "Innovation Labs", "Digital Ventures",
+                "Future Systems", "Smart Analytics", "Data Insights", "Cloud Nine", "Peak Performance",
+                "Next Gen Tech", "Prime Solutions", "Elite Consulting", "Apex Industries", "Summit Corp"),
+    Contact = c("John Smith", "Sarah Johnson", "Mike Chen", "Emily Brown", "David Lee",
+                "Lisa Anderson", "Robert Taylor", "Maria Garcia", "James Wilson", "Patricia Martinez",
+                "Michael Davis", "Jennifer Rodriguez", "William Lopez", "Elizabeth Lee", "Christopher Kim"),
+    Revenue = c(125000, 89000, 156000, 67000, 198000,
+                143000, 92000, 178000, 134000, 156000,
+                98000, 187000, 112000, 165000, 145000),
+    Region = c("North", "East", "West", "South", "North",
+               "East", "West", "South", "North", "East",
+               "West", "South", "North", "East", "West"),
+    Status = c("Active", "Active", "Active", "Pending", "Active",
+               "Active", "Pending", "Active", "Active", "Active",
+               "Pending", "Active", "Active", "Active", "Pending")
   )
 
-  # Convert data to Grid Pro format
+  # Convert data to Grid Pro format (column-based)
   data_json <- jsonlite::toJSON(customers, dataframe = "columns", auto_unbox = FALSE)
 
   # Create HTML with Grid Pro
@@ -31,11 +41,16 @@ generate_customers_table <- function() {
 <head>
   <meta charset="utf-8"/>
   <title>Customer Overview</title>
+  <link rel="stylesheet" href="https://code.highcharts.com/dashboards/css/datagrid.css">
   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
     body {
       background-color: white;
       font-family: Arial, sans-serif;
-      margin: 0;
       padding: 20px;
     }
     #container {
@@ -53,10 +68,28 @@ generate_customers_table <- function() {
       font-size: 14px;
       margin-bottom: 20px;
     }
-    .highcharts-data-grid-container {
+    .controls {
+      margin-bottom: 15px;
+    }
+    .btn {
+      padding: 8px 16px;
+      background-color: #4A90E2;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      transition: background-color 0.2s;
+    }
+    .btn:hover {
+      background-color: #357ABD;
+    }
+    #grid {
       border: 1px solid #e8ecef;
       border-radius: 8px;
       overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
     }
   </style>
   <script src="https://code.highcharts.com/dashboards/datagrid.js"></script>
@@ -64,14 +97,17 @@ generate_customers_table <- function() {
 <body>
   <div id="container">
     <h1>Customer Overview</h1>
-    <p class="subtitle">Interactive customer data table with sorting and filtering</p>
+    <p class="subtitle">Search, sort, and filter customer data</p>
+    <div class="controls">
+      <button class="btn" onclick="downloadCSV()">Download CSV</button>
+    </div>
     <div id="grid"></div>
   </div>
 
   <script>
     const data = %s;
 
-    const dataGrid = new DataGrid.DataGrid("grid", {
+    const grid = DataGrid.grid("grid", {
       dataTable: {
         columns: data
       },
@@ -79,42 +115,70 @@ generate_customers_table <- function() {
         sorting: {
           sortable: true
         },
+        filtering: {
+          enabled: true,
+          inline: false
+        },
         cells: {
           editable: false
         }
       },
-      columns: [{
-        id: "Name",
-        header: {
-          format: "Company Name"
-        }
-      }, {
-        id: "Contact",
-        header: {
-          format: "Contact Person"
-        }
-      }, {
-        id: "Revenue",
-        header: {
-          format: "Revenue ($)"
-        },
-        cells: {
-          formatter: function() {
-            return "$" + this.value.toLocaleString();
+      rendering: {
+        columns: [{
+          id: "Company",
+          header: {
+            format: "Company Name"
           }
-        }
-      }, {
-        id: "Region",
-        header: {
-          format: "Region"
-        }
-      }, {
-        id: "Status",
-        header: {
-          format: "Status"
-        }
-      }]
+        }, {
+          id: "Contact",
+          header: {
+            format: "Contact Person"
+          }
+        }, {
+          id: "Revenue",
+          header: {
+            format: "Revenue"
+          },
+          cells: {
+            formatter: function() {
+              return "$" + this.value.toLocaleString();
+            }
+          }
+        }, {
+          id: "Region",
+          header: {
+            format: "Region"
+          }
+        }, {
+          id: "Status",
+          header: {
+            format: "Status"
+          }
+        }]
+      },
+      pagination: {
+        enabled: true,
+        limit: 10,
+        limitOptions: [5, 10, 25, 50]
+      },
+      credits: {
+        enabled: false
+      }
     });
+
+    // CSV Download Function
+    function downloadCSV() {
+      if (grid && grid.dataTable) {
+        const csv = grid.dataTable.getCSV();
+        const blob = new Blob([csv], { type: "text/csv" });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "customers-export.csv";
+        a.click();
+        window.URL.revokeObjectURL(url);
+      }
+    }
   </script>
 </body>
 </html>', data_json)

@@ -31,7 +31,7 @@ chart_files <- list.files("r/charts", pattern = "\\.R$", full.names = TRUE)
 charts_metadata <- list()
 
 # Generate each chart and collect metadata
-cat("📊 Charts:\n")
+cat("Charts:\n")
 for (chart_file in chart_files) {
   cat(paste("  Generating:", basename(chart_file), "\n"))
 
@@ -55,7 +55,7 @@ tables_metadata <- list()
 
 # Generate each table and collect metadata
 if (length(table_files) > 0) {
-  cat("\n📋 Tables:\n")
+  cat("\nTables:\n")
   for (table_file in table_files) {
     cat(paste("  Generating:", basename(table_file), "\n"))
 
@@ -272,7 +272,7 @@ index_html <- paste0('<!DOCTYPE html>
     </header>
 
     <section style="margin-bottom: 2rem;">
-      <h2 style="color: #2c3e50; font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem;">📊 Charts</h2>
+      <h2 style="color: #2c3e50; font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem;">Charts</h2>
       <div class="grid">
 ', charts_html, '
       </div>
@@ -280,7 +280,7 @@ index_html <- paste0('<!DOCTYPE html>
 
 ', if (tables_html != "") paste0('
     <section>
-      <h2 style="color: #2c3e50; font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem;">📋 Tables</h2>
+      <h2 style="color: #2c3e50; font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem;">Tables</h2>
       <div class="grid">
 ', tables_html, '
       </div>
@@ -319,6 +319,6 @@ index_html <- paste0('<!DOCTYPE html>
 writeLines(index_html, "docs/index.html")
 cat("✓ index.html generated\n")
 
-cat("\n✅ All visualizations built successfully!\n")
-cat(sprintf("   📊 %d charts, 📋 %d tables\n", length(charts_metadata), length(tables_metadata)))
-cat("📦 Ready to commit and push to GitHub Pages\n")
+cat("\nAll visualizations built successfully!\n")
+cat(sprintf("   %d charts, %d tables\n", length(charts_metadata), length(tables_metadata)))
+cat("Ready to commit and push to GitHub Pages\n")
