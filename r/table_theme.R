@@ -82,9 +82,6 @@ get_grid_pro_config <- function(page_size = 10) {
           count = 7
         )
       )
-    ),
-    style = list(
-      theme = "light"
     )
   )
 }

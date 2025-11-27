@@ -112,7 +112,7 @@ generate_table_html <- function(title, subtitle, data, columns, filename, page_s
   <script src="https://cdn.jsdelivr.net/npm/@highcharts/grid-pro/grid-pro.js"></script>
 </head>
 <body>
-  <div id="container">
+  <div id="container" class="highcharts-light">
     <h1>%s</h1>
     <p class="subtitle">%s</p>
     <div class="controls">
@@ -130,8 +130,7 @@ generate_table_html <- function(title, subtitle, data, columns, filename, page_s
       },
       columnDefaults: %s,
       columns: %s,
-      pagination: %s,
-      style: %s
+      pagination: %s
     });
 
     %s
@@ -146,7 +145,6 @@ generate_table_html <- function(title, subtitle, data, columns, filename, page_s
     jsonlite::toJSON(config$columnDefaults, auto_unbox = TRUE),
     columns_json,
     jsonlite::toJSON(config$pagination, auto_unbox = TRUE),
-    jsonlite::toJSON(config$style, auto_unbox = TRUE),
     download_fn
   )
 }

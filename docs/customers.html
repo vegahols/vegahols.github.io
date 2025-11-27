@@ -55,7 +55,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@highcharts/grid-pro/grid-pro.js"></script>
 </head>
 <body>
-  <div id="container">
+  <div id="container" class="highcharts-light">
     <h1>Customer Overview</h1>
     <p class="subtitle">Search, sort, and filter customer data</p>
     <div class="controls">
@@ -78,8 +78,7 @@
         const bgColor = value === "Active" ? "#E8F5E9" : "#FFF3E0";
         return `<span style="background-color: ${bgColor}; color: ${color}; padding: 4px 12px; border-radius: 12px; font-weight: 500; font-size: 12px;">${value}</span>`;
       } }}],
-      pagination: {"enabled":true,"pageSize":10,"controls":{"pageSizeSelector":{"enabled":true,"options":[5,10,25,50]},"pageInfo":true,"firstLastButtons":true,"previousNextButtons":true,"pageButtons":{"enabled":true,"count":7}}},
-      style: {"theme":"light"}
+      pagination: {"enabled":true,"pageSize":10,"controls":{"pageSizeSelector":{"enabled":true,"options":[5,10,25,50]},"pageInfo":true,"firstLastButtons":true,"previousNextButtons":true,"pageButtons":{"enabled":true,"count":7}}}
     });
 
     function downloadCSV() {
