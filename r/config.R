@@ -50,6 +50,16 @@ EXPORT_CONFIG <- list(
   menuItemStyle = list(fontSize = "13px", fontWeight = "400")
 )
 
+# Navigation menu styling (for hamburger menu)
+NAVIGATION_CONFIG <- list(
+  menuStyle = list(
+    border = "1px solid #e0e0e0",
+    borderRadius = "6px",
+    background = "#ffffff",
+    boxShadow = "0 2px 8px rgba(0,0,0,0.1)"
+  )
+)
+
 # Output settings
 OUTPUT_DIR <- "docs"
 LIB_DIR <- "lib"

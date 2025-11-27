@@ -18,6 +18,11 @@ apply_common_theme <- function(hc) {
       enabled = EXPORT_CONFIG$enabled,
       buttons = EXPORT_CONFIG$buttons,
       menuItemStyle = EXPORT_CONFIG$menuItemStyle
+    ) %>%
+    hc_add_theme(
+      hc_theme(
+        navigation = NAVIGATION_CONFIG
+      )
     )
 }
 
