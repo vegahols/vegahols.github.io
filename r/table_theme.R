@@ -92,15 +92,8 @@ get_grid_pro_config <- function(page_size = 10) {
 #' @return A string containing the JavaScript function
 get_csv_download_function <- function(filename) {
   sprintf('function downloadCSV() {
-    if (grid && grid.dataTable) {
-      const csv = grid.dataTable.getCSV();
-      const blob = new Blob([csv], { type: "text/csv" });
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "%s.csv";
-      a.click();
-      window.URL.revokeObjectURL(url);
+    if (grid) {
+      grid.downloadCSV();
     }
   }', filename)
 }
