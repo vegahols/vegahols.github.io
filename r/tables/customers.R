@@ -3,11 +3,9 @@
 # VIZ_TYPE: Data Table
 # VIZ_FILE: customers.html
 
-# Customer Table using DT (DataTables for R)
+# Customer Table using Highcharts Grid Pro
 # Displays customer information with sorting, filtering, and pagination
 
-library(DT)
-library(htmlwidgets)
 source("r/config.R")
 source("r/helpers.R")
 
@@ -31,48 +29,43 @@ generate_customers_table <- function() {
                "West", "South", "North", "East", "West"),
     Status = c("Active", "Active", "Active", "Pending", "Active",
                "Active", "Pending", "Active", "Active", "Active",
-               "Pending", "Active", "Active", "Active", "Pending")
+               "Pending", "Active", "Active", "Active", "Pending"),
+    stringsAsFactors = FALSE
   )
 
   # Format revenue column
   customers$Revenue <- paste0("$", format(customers$Revenue, big.mark = ","))
 
-  # Create DT table with sorting, filtering, and pagination
-  dt <- datatable(
-    customers,
-    options = list(
-      pageLength = 10,
-      lengthMenu = c(5, 10, 25, 50),
-      searching = TRUE,
-      ordering = TRUE,
-      dom = 'Blfrtip',
-      buttons = c('csv'),
-      columnDefs = list(
-        list(className = 'dt-center', targets = c(3, 4))
-      )
-    ),
-    class = 'cell-border stripe',
-    rownames = FALSE,
-    caption = htmltools::tags$caption(
-      style = 'caption-side: top; text-align: left;',
-      htmltools::h1(style = 'color: #2c3e50; font-size: 24px; font-weight: 600; margin-bottom: 8px;', 'Customer Overview'),
-      htmltools::p(style = 'color: #7f8c8d; font-size: 14px; margin-bottom: 20px;', 'Search, sort, and filter customer data')
+  # Define Grid Pro columns with formatters
+  columns <- list(
+    list(id = "Company", header = list(format = "Company")),
+    list(id = "Contact", header = list(format = "Contact")),
+    list(id = "Revenue", header = list(format = "Revenue")),
+    list(id = "Region", header = list(format = "Region")),
+    list(
+      id = "Status",
+      header = list(format = "Status"),
+      formatter = 'function(cell) {
+        const value = cell.value;
+        const color = value === "Active" ? "#5CB85C" : "#F0AD4E";
+        const bgColor = value === "Active" ? "#E8F5E9" : "#FFF3E0";
+        return `<span style="background-color: ${bgColor}; color: ${color}; padding: 4px 12px; border-radius: 12px; font-weight: 500; font-size: 12px;">${value}</span>`;
+      }'
     )
   )
 
-  # Save table
-  original_dir <- getwd()
-  dir.create(OUTPUT_DIR, showWarnings = FALSE)
-  setwd(OUTPUT_DIR)
+  # Generate HTML using helper
+  html_content <- generate_table_html(
+    title = "Customer Overview",
+    subtitle = "Search, sort, and filter customer data",
+    data = customers,
+    columns = columns,
+    filename = "customers",
+    page_size = 10
+  )
 
-  tryCatch({
-    saveWidget(dt, file = "customers.html", selfcontained = FALSE, libdir = LIB_DIR, title = "Customer Overview")
-    cat(paste("✓ customers.html generated\n"))
-  }, error = function(e) {
-    cat(paste("✗ Error generating customers.html:", e$message, "\n"))
-  }, finally = {
-    setwd(original_dir)
-  })
+  # Save table using helper
+  save_table(html_content, "customers.html")
 }
 
 # Run if executed directly

@@ -124,7 +124,7 @@ generate_table_html <- function(title, subtitle, data, columns, filename, page_s
   <script>
     const data = %s;
 
-    const grid = new DataGrid.DataGrid("grid", {
+    const grid = DataGrid.dataGrid("grid", {
       dataTable: {
         columns: data
       },
