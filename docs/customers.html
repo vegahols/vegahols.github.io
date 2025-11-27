@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>Customer Overview</title>
+  <style>
+    body {
+      background-color: white;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
+    #container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    h1 {
+      color: #2c3e50;
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .subtitle {
+      color: #7f8c8d;
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+    .highcharts-data-grid-container {
+      border: 1px solid #e8ecef;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+  </style>
+  <script src="https://code.highcharts.com/dashboards/datagrid.js"></script>
+</head>
+<body>
+  <div id="container">
+    <h1>Customer Overview</h1>
+    <p class="subtitle">Interactive customer data table with sorting and filtering</p>
+    <div id="grid"></div>
+  </div>
+
+  <script>
+    const data = {"Name":["Acme Corp","TechStart Inc","Global Solutions","Innovation Labs","Digital Ventures"],"Contact":["John Smith","Sarah Johnson","Mike Chen","Emily Brown","David Lee"],"Revenue":[125000,89000,156000,67000,198000],"Region":["North","East","West","South","North"],"Status":["Active","Active","Active","Pending","Active"]};
+
+    const dataGrid = new DataGrid.DataGrid("grid", {
+      dataTable: {
+        columns: data
+      },
+      columnDefaults: {
+        sorting: {
+          sortable: true
+        },
+        cells: {
+          editable: false
+        }
+      },
+      columns: [{
+        id: "Name",
+        header: {
+          format: "Company Name"
+        }
+      }, {
+        id: "Contact",
+        header: {
+          format: "Contact Person"
+        }
+      }, {
+        id: "Revenue",
+        header: {
+          format: "Revenue ($)"
+        },
+        cells: {
+          formatter: function() {
+            return "$" + this.value.toLocaleString();
+          }
+        }
+      }, {
+        id: "Region",
+        header: {
+          format: "Region"
+        }
+      }, {
+        id: "Status",
+        header: {
+          format: "Status"
+        }
+      }]
+    });
+  </script>
+</body>
+</html>

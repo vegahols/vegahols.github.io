@@ -79,7 +79,6 @@ The workflow is beautifully simple:
 # CHART_TITLE: Your Chart Title
 # CHART_DESC: Brief description
 # CHART_TYPE: Line Chart
-# CHART_ICON: 📊
 # CHART_FILE: yourname.html
 
 source("r/theme.R")
@@ -112,7 +111,6 @@ Charts use metadata comments for automatic index generation:
 - `CHART_TITLE` - Display title
 - `CHART_DESC` - Short description
 - `CHART_TYPE` - Chart type (Line Chart, Bar Chart, etc.)
-- `CHART_ICON` - Emoji icon
 - `CHART_FILE` - Output HTML filename
 
 ## How It Works

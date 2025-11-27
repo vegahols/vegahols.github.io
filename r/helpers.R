@@ -54,3 +54,19 @@ get_months <- function() {
   c("Jan", "Feb", "Mar", "Apr", "May", "Jun",
     "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
 }
+
+#' Save a Grid Pro table to HTML file
+#'
+#' @param html_content Complete HTML content with Grid Pro table
+#' @param filename Output filename (e.g., "customers.html")
+#' @return NULL (side effect: saves file)
+save_table <- function(html_content, filename) {
+  dir.create(OUTPUT_DIR, showWarnings = FALSE)
+
+  tryCatch({
+    writeLines(html_content, file.path(OUTPUT_DIR, filename))
+    cat(paste("✓", filename, "generated\n"))
+  }, error = function(e) {
+    cat(paste("✗ Error generating", filename, ":", e$message, "\n"))
+  })
+}

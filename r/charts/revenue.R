@@ -1,7 +1,6 @@
 # CHART_TITLE: Revenue Comparison
 # CHART_DESC: Quarterly revenue analysis
 # CHART_TYPE: Bar Chart
-# CHART_ICON: 💰
 # CHART_FILE: revenue.html
 
 # Revenue Bar Chart

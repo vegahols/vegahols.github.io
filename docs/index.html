@@ -147,7 +147,9 @@
       <p class="subtitle">Interactive data visualizations</p>
     </header>
 
-    <div class="grid">
+    <section style="margin-bottom: 2rem;">
+      <h2 style="color: #2c3e50; font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem;">📊 Charts</h2>
+      <div class="grid">
 
       <div class="card">
         <div class="card-header">
@@ -205,7 +207,35 @@
           <code>&lt;iframe src="https://vegahols.github.io/sales.html" width="100%" height="500" frameborder="0"&gt;&lt;/iframe&gt;</code>
         </div>
       </div>
-    </div>
+      </div>
+    </section>
+
+
+    <section>
+      <h2 style="color: #2c3e50; font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem;">📋 Tables</h2>
+      <div class="grid">
+
+      <div class="card">
+        <div class="card-header">
+          <h2>Customer Overview</h2>
+          <span class="card-type">Data Table</span>
+        </div>
+        <div class="chart-preview">
+          <iframe src="customers.html" frameborder="0"></iframe>
+        </div>
+        <p style="color: #7f8c8d; font-size: 0.9rem; margin-bottom: 0.75rem;">Interactive customer data table</p>
+        <div class="card-actions">
+          <a href="customers.html" class="btn btn-primary">View Full Table</a>
+          <button class="btn btn-secondary" onclick="toggleEmbed('customers')">Embed Code</button>
+        </div>
+        <div class="embed-code" id="embed-customers">
+          <button class="copy-btn" onclick="copyEmbed('customers')">Copy</button>
+          <code>&lt;iframe src="https://vegahols.github.io/customers.html" width="100%" height="500" frameborder="0"&gt;&lt;/iframe&gt;</code>
+        </div>
+      </div>
+      </div>
+    </section>
+
 
     <footer>
       <p>Generated with R + Highcharts</p>

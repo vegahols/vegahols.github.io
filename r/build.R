@@ -1,20 +1,27 @@
 #!/usr/bin/env Rscript
 
 # Master build script
-# Generates all charts and auto-generates the index page
+# Generates all charts and tables, auto-generates the index page
 
-cat("🚀 Building all charts...\n\n")
+cat("🚀 Building all visualizations...\n\n")
 
-# Function to extract metadata from chart file
+# Function to extract metadata from visualization file (chart or table)
 extract_metadata <- function(file_path) {
   lines <- readLines(file_path, n = 20)
 
   metadata <- list()
-  metadata$title <- gsub(".*CHART_TITLE:\\s*", "", grep("CHART_TITLE:", lines, value = TRUE)[1])
-  metadata$desc <- gsub(".*CHART_DESC:\\s*", "", grep("CHART_DESC:", lines, value = TRUE)[1])
-  metadata$type <- gsub(".*CHART_TYPE:\\s*", "", grep("CHART_TYPE:", lines, value = TRUE)[1])
-  metadata$icon <- gsub(".*CHART_ICON:\\s*", "", grep("CHART_ICON:", lines, value = TRUE)[1])
-  metadata$file <- gsub(".*CHART_FILE:\\s*", "", grep("CHART_FILE:", lines, value = TRUE)[1])
+
+  # Try VIZ_* format first (for tables), then fall back to CHART_* format
+  title_line <- grep("VIZ_TITLE:|CHART_TITLE:", lines, value = TRUE)[1]
+  desc_line <- grep("VIZ_DESC:|CHART_DESC:", lines, value = TRUE)[1]
+  type_line <- grep("VIZ_TYPE:|CHART_TYPE:", lines, value = TRUE)[1]
+  file_line <- grep("VIZ_FILE:|CHART_FILE:", lines, value = TRUE)[1]
+
+  metadata$title <- gsub(".*(VIZ_TITLE|CHART_TITLE):\\s*", "", title_line)
+  metadata$desc <- gsub(".*(VIZ_DESC|CHART_DESC):\\s*", "", desc_line)
+  metadata$type <- gsub(".*(VIZ_TYPE|CHART_TYPE):\\s*", "", type_line)
+  metadata$file <- gsub(".*(VIZ_FILE|CHART_FILE):\\s*", "", file_line)
+  metadata$category <- ifelse(grepl("Table", metadata$type), "table", "chart")
 
   metadata
 }
@@ -24,8 +31,9 @@ chart_files <- list.files("r/charts", pattern = "\\.R$", full.names = TRUE)
 charts_metadata <- list()
 
 # Generate each chart and collect metadata
+cat("📊 Charts:\n")
 for (chart_file in chart_files) {
-  cat(paste("Generating:", basename(chart_file), "\n"))
+  cat(paste("  Generating:", basename(chart_file), "\n"))
 
   # Extract metadata
   metadata <- extract_metadata(chart_file)
@@ -41,10 +49,37 @@ for (chart_file in chart_files) {
   }
 }
 
+# Discover all table files
+table_files <- list.files("r/tables", pattern = "\\.R$", full.names = TRUE)
+tables_metadata <- list()
+
+# Generate each table and collect metadata
+if (length(table_files) > 0) {
+  cat("\n📋 Tables:\n")
+  for (table_file in table_files) {
+    cat(paste("  Generating:", basename(table_file), "\n"))
+
+    # Extract metadata
+    metadata <- extract_metadata(table_file)
+    tables_metadata[[length(tables_metadata) + 1]] <- metadata
+
+    # Source and run table
+    source(table_file)
+    table_name <- gsub("\\.R$", "", basename(table_file))
+    func_name <- paste0("generate_", table_name, "_table")
+
+    if (exists(func_name)) {
+      do.call(func_name, list())
+    }
+  }
+}
+
 cat("\n")
 
-# Auto-generate index page from discovered charts
-generate_card <- function(chart) {
+# Auto-generate index page from discovered charts and tables
+generate_card <- function(viz, category = "chart") {
+  button_text <- ifelse(category == "chart", "View Full Chart", "View Full Table")
+
   sprintf('
       <div class="card">
         <div class="card-header">
@@ -56,7 +91,7 @@ generate_card <- function(chart) {
         </div>
         <p style="color: #7f8c8d; font-size: 0.9rem; margin-bottom: 0.75rem;">%s</p>
         <div class="card-actions">
-          <a href="%s" class="btn btn-primary">View Full Chart</a>
+          <a href="%s" class="btn btn-primary">%s</a>
           <button class="btn btn-secondary" onclick="toggleEmbed(\'%s\')">Embed Code</button>
         </div>
         <div class="embed-code" id="embed-%s">
@@ -64,19 +99,27 @@ generate_card <- function(chart) {
           <code>&lt;iframe src="https://vegahols.github.io/%s" width="100%%" height="500" frameborder="0"&gt;&lt;/iframe&gt;</code>
         </div>
       </div>',
-    chart$title, chart$type,
-    chart$file,
-    chart$desc,
-    chart$file,
-    gsub("\\.html$", "", chart$file),
-    gsub("\\.html$", "", chart$file),
-    gsub("\\.html$", "", chart$file),
-    chart$file
+    viz$title, viz$type,
+    viz$file,
+    viz$desc,
+    viz$file,
+    button_text,
+    gsub("\\.html$", "", viz$file),
+    gsub("\\.html$", "", viz$file),
+    gsub("\\.html$", "", viz$file),
+    viz$file
   )
 }
 
-# Generate all cards
-cards_html <- paste(sapply(charts_metadata, generate_card), collapse = "\n")
+# Generate chart cards
+charts_html <- paste(sapply(charts_metadata, function(c) generate_card(c, "chart")), collapse = "\n")
+
+# Generate table cards
+tables_html <- if (length(tables_metadata) > 0) {
+  paste(sapply(tables_metadata, function(t) generate_card(t, "table")), collapse = "\n")
+} else {
+  ""
+}
 
 # Generate complete index page
 index_html <- paste0('<!DOCTYPE html>
@@ -228,9 +271,21 @@ index_html <- paste0('<!DOCTYPE html>
       <p class="subtitle">Interactive data visualizations</p>
     </header>
 
-    <div class="grid">
-', cards_html, '
-    </div>
+    <section style="margin-bottom: 2rem;">
+      <h2 style="color: #2c3e50; font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem;">📊 Charts</h2>
+      <div class="grid">
+', charts_html, '
+      </div>
+    </section>
+
+', if (tables_html != "") paste0('
+    <section>
+      <h2 style="color: #2c3e50; font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem;">📋 Tables</h2>
+      <div class="grid">
+', tables_html, '
+      </div>
+    </section>
+') else '', '
 
     <footer>
       <p>Generated with R + Highcharts</p>
@@ -264,5 +319,6 @@ index_html <- paste0('<!DOCTYPE html>
 writeLines(index_html, "docs/index.html")
 cat("✓ index.html generated\n")
 
-cat("\n✅ All charts built successfully!\n")
+cat("\n✅ All visualizations built successfully!\n")
+cat(sprintf("   📊 %d charts, 📋 %d tables\n", length(charts_metadata), length(tables_metadata)))
 cat("📦 Ready to commit and push to GitHub Pages\n")
