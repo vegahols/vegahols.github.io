@@ -1,3 +1,9 @@
+# CHART_TITLE: Sales Trend
+# CHART_DESC: Monthly sales performance
+# CHART_TYPE: Line Chart
+# CHART_ICON: 📈
+# CHART_FILE: sales.html
+
 # Sales Line Chart
 # Generates monthly sales trend as a line chart
 

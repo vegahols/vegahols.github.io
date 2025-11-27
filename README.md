@@ -66,43 +66,62 @@ A simple, no-build demo using R's official Highcharts wrapper (`highcharter`) to
 
 The workflow is beautifully simple:
 
-1. **Edit** `r/generate_data.R` - All chart configuration in R
-2. **Run** `./generate.sh` - Generates HTML with Highcharts
+1. **Create/Edit** chart files in `r/charts/`
+2. **Run** `./generate.sh` - Generates all charts and index
 3. **Commit & Push** - GitHub Pages updates automatically
 
-### Example: Modify the Chart
+### Add a New Chart
 
-Edit `r/generate_data.R`:
+**1. Create chart file** `r/charts/yourname.R`:
 
 ```r
-# Change data
-sales <- c(120, 135, 140, 160, 175, 190, 210, 225, 240, 255, 270, 290)
+# CHART_TITLE: Your Chart Title
+# CHART_DESC: Brief description
+# CHART_TYPE: Line Chart
+# CHART_ICON: 📊
+# CHART_FILE: yourname.html
 
-# Change chart type
-hc_add_series(type = "column")  # bar chart
+source("r/theme.R")
+source("r/helpers.R")
 
-# Change colors
-hc_add_series(color = "#ff6b6b")
+generate_yourname_chart <- function() {
+  # Your data
+  data <- c(10, 20, 30, 40)
 
-# Add multiple series
-hc_add_series(name = "Revenue", data = revenue) %>%
-hc_add_series(name = "Costs", data = costs)
+  # Create chart
+  hc <- highchart() %>%
+    apply_full_theme("Your Title", "Subtitle") %>%
+    hc_add_series(name = "Data", data = data, type = "line", color = COLORS$primary)
+
+  # Save
+  save_chart(hc, "yourname.html", "Your Title")
+}
 ```
 
-Then:
+**2. Build**:
 ```bash
 ./generate.sh
-git add docs/
-git commit -m "Update chart"
-git push
 ```
+
+**3. Done!** Your chart automatically appears on the dashboard index.
+
+### Metadata Fields
+
+Charts use metadata comments for automatic index generation:
+- `CHART_TITLE` - Display title
+- `CHART_DESC` - Short description
+- `CHART_TYPE` - Chart type (Line Chart, Bar Chart, etc.)
+- `CHART_ICON` - Emoji icon
+- `CHART_FILE` - Output HTML filename
 
 ## How It Works
 
-1. **R generates complete HTML** - `highcharter` creates self-contained visualization
-2. **Libraries optimized** - Highcharts libs separated for browser caching
-3. **GitHub Pages serves** - Static files, no build process
-4. **Fast deployment** - Commit and push, live in seconds
+1. **Automatic discovery** - `build.R` finds all charts in `r/charts/`
+2. **Metadata extraction** - Reads chart metadata from file comments
+3. **Chart generation** - Generates HTML for each chart
+4. **Auto-generated index** - Creates dashboard with all discovered charts
+5. **No manual config** - Just add chart files and run build
+6. **GitHub Pages serves** - Static files, no build process needed
 
 ## Customization
 
@@ -131,29 +150,36 @@ type = "bubble"
 
 ### Load Real Data
 
-Edit `r/generate_data.R` to load your actual data instead of generating random data.
+Replace generated data with actual data from CSV files or databases.
 
 **From CSV files**:
 
-Place your CSV in the `r/` folder, then modify `r/generate_data.R`:
+1. **Place CSV** in `r/data/` folder:
+   ```
+   r/data/sales_data.csv
+   ```
 
-```r
-# Replace the random data generation with:
-data <- read.csv("r/sales_data.csv")
-sales <- data$sales
-months <- data$month
+2. **In your chart file** (e.g., `r/charts/sales.R`), use the helper:
+   ```r
+   # Replace generated data with:
+   data <- load_data("sales_data.csv")
+   sales <- data$sales
+   months <- data$month
 
-# Then create chart with your data:
-hc <- highchart() %>%
-  hc_xAxis(categories = months) %>%
-  hc_add_series(name = "Sales", data = sales, type = "line")
-```
+   # Then use in chart:
+   hc <- highchart() %>%
+     apply_full_theme("Sales", "From CSV data") %>%
+     hc_xAxis(categories = months) %>%
+     hc_add_series(name = "Sales", data = sales, type = "line")
+   ```
 
-Then run: `Rscript r/generate_data.R`
+3. **Build**: `./generate.sh`
+
+The `load_data()` helper automatically looks in `r/data/` and handles errors.
 
 **From databases**:
 
-Add this to `r/generate_data.R` (requires DBI package: `install.packages("DBI")`):
+In your chart file (requires DBI package: `install.packages("DBI")`):
 
 ```r
 library(DBI)
@@ -162,33 +188,27 @@ data <- dbGetQuery(con, "SELECT month, revenue FROM sales WHERE year = 2024")
 dbDisconnect(con)
 
 hc <- highchart() %>%
+  apply_full_theme("Revenue", "From database") %>%
   hc_xAxis(categories = data$month) %>%
   hc_add_series(name = "Revenue", data = data$revenue, type = "line")
 ```
 
 **From APIs**:
 
-Add this to `r/generate_data.R` (jsonlite is already installed system-wide):
+In your chart file (jsonlite is already installed system-wide):
 
 ```r
 library(jsonlite)
 response <- fromJSON("https://api.example.com/sales")
 
 hc <- highchart() %>%
+  apply_full_theme("Sales", "Live API data") %>%
   hc_add_series(name = "Sales", data = response$data$values, type = "line")
 ```
 
-**Summary**: Edit `r/generate_data.R` → Replace data generation → Run `Rscript r/generate_data.R` → Commit and push.
-
 ### Multiple Charts
 
-Create additional R scripts and generate multiple pages:
-
-```r
-# Save to different files
-saveWidget(hc, file = "docs/chart1.html", ...)
-saveWidget(hc2, file = "docs/chart2.html", ...)
-```
+The system automatically handles multiple charts! Just add new chart files to `r/charts/` with metadata and run `./generate.sh`. See [Add a New Chart](#add-a-new-chart) section above.
 
 ## Best Practices
 

@@ -1,3 +1,9 @@
+# CHART_TITLE: Market Share
+# CHART_DESC: Product distribution breakdown
+# CHART_TYPE: Pie Chart
+# CHART_ICON: 🥧
+# CHART_FILE: market.html
+
 # Market Share Pie Chart
 # Generates market share distribution as a pie chart
 

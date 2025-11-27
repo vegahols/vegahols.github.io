@@ -1,18 +1,38 @@
 #!/usr/bin/env Rscript
 
 # Master build script
-# Generates all charts and the index page
+# Generates all charts and auto-generates the index page
 
 cat("🚀 Building all charts...\n\n")
 
-# Source all chart files
-chart_files <- list.files("r/charts", pattern = "\\.R$", full.names = TRUE)
+# Function to extract metadata from chart file
+extract_metadata <- function(file_path) {
+  lines <- readLines(file_path, n = 20)
 
+  metadata <- list()
+  metadata$title <- gsub(".*CHART_TITLE:\\s*", "", grep("CHART_TITLE:", lines, value = TRUE)[1])
+  metadata$desc <- gsub(".*CHART_DESC:\\s*", "", grep("CHART_DESC:", lines, value = TRUE)[1])
+  metadata$type <- gsub(".*CHART_TYPE:\\s*", "", grep("CHART_TYPE:", lines, value = TRUE)[1])
+  metadata$icon <- gsub(".*CHART_ICON:\\s*", "", grep("CHART_ICON:", lines, value = TRUE)[1])
+  metadata$file <- gsub(".*CHART_FILE:\\s*", "", grep("CHART_FILE:", lines, value = TRUE)[1])
+
+  metadata
+}
+
+# Discover all chart files
+chart_files <- list.files("r/charts", pattern = "\\.R$", full.names = TRUE)
+charts_metadata <- list()
+
+# Generate each chart and collect metadata
 for (chart_file in chart_files) {
   cat(paste("Generating:", basename(chart_file), "\n"))
-  source(chart_file)
 
-  # Call the generate function (convention: generate_<name>_chart)
+  # Extract metadata
+  metadata <- extract_metadata(chart_file)
+  charts_metadata[[length(charts_metadata) + 1]] <- metadata
+
+  # Source and run chart
+  source(chart_file)
   chart_name <- gsub("\\.R$", "", basename(chart_file))
   func_name <- paste0("generate_", chart_name, "_chart")
 
@@ -23,8 +43,38 @@ for (chart_file in chart_files) {
 
 cat("\n")
 
-# Generate index page
-index_html <- '<!DOCTYPE html>
+# Auto-generate index page from discovered charts
+generate_card <- function(chart) {
+  sprintf('
+      <div class="card">
+        <div class="card-header">
+          <h2>%s %s</h2>
+          <span class="card-type">%s</span>
+        </div>
+        <p style="color: #7f8c8d; font-size: 0.9rem; margin-bottom: 0.5rem;">%s</p>
+        <div class="card-actions">
+          <a href="%s" class="btn btn-primary">View Chart</a>
+          <button class="btn btn-secondary" onclick="toggleEmbed(\'%s\')">Embed Code</button>
+        </div>
+        <div class="embed-code" id="embed-%s">
+          <button class="copy-btn" onclick="copyEmbed(\'%s\')">Copy</button>
+          <code>&lt;iframe src="https://vegahols.github.io/%s" width="100%%" height="500" frameborder="0"&gt;&lt;/iframe&gt;</code>
+        </div>
+      </div>',
+    chart$icon, chart$title, chart$type, chart$desc,
+    chart$file,
+    gsub("\\.html$", "", chart$file),
+    gsub("\\.html$", "", chart$file),
+    gsub("\\.html$", "", chart$file),
+    chart$file
+  )
+}
+
+# Generate all cards
+cards_html <- paste(sapply(charts_metadata, generate_card), collapse = "\n")
+
+# Generate complete index page
+index_html <- paste0('<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -161,53 +211,7 @@ index_html <- '<!DOCTYPE html>
     </header>
 
     <div class="grid">
-      <div class="card">
-        <div class="card-header">
-          <h2>Sales Trend</h2>
-          <span class="card-type">Line Chart</span>
-        </div>
-        <p style="color: #7f8c8d; font-size: 0.9rem; margin-bottom: 0.5rem;">Monthly sales performance</p>
-        <div class="card-actions">
-          <a href="sales.html" class="btn btn-primary">View Chart</a>
-          <button class="btn btn-secondary" onclick="toggleEmbed(\'sales\')">Embed Code</button>
-        </div>
-        <div class="embed-code" id="embed-sales">
-          <button class="copy-btn" onclick="copyEmbed(\'sales\')">Copy</button>
-          <code>&lt;iframe src="https://vegahols.github.io/sales.html" width="100%" height="500" frameborder="0"&gt;&lt;/iframe&gt;</code>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-header">
-          <h2>Revenue Comparison</h2>
-          <span class="card-type">Bar Chart</span>
-        </div>
-        <p style="color: #7f8c8d; font-size: 0.9rem; margin-bottom: 0.5rem;">Quarterly revenue analysis</p>
-        <div class="card-actions">
-          <a href="revenue.html" class="btn btn-primary">View Chart</a>
-          <button class="btn btn-secondary" onclick="toggleEmbed(\'revenue\')">Embed Code</button>
-        </div>
-        <div class="embed-code" id="embed-revenue">
-          <button class="copy-btn" onclick="copyEmbed(\'revenue\')">Copy</button>
-          <code>&lt;iframe src="https://vegahols.github.io/revenue.html" width="100%" height="500" frameborder="0"&gt;&lt;/iframe&gt;</code>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-header">
-          <h2>Market Share</h2>
-          <span class="card-type">Pie Chart</span>
-        </div>
-        <p style="color: #7f8c8d; font-size: 0.9rem; margin-bottom: 0.5rem;">Product distribution breakdown</p>
-        <div class="card-actions">
-          <a href="market.html" class="btn btn-primary">View Chart</a>
-          <button class="btn btn-secondary" onclick="toggleEmbed(\'market\')">Embed Code</button>
-        </div>
-        <div class="embed-code" id="embed-market">
-          <button class="copy-btn" onclick="copyEmbed(\'market\')">Copy</button>
-          <code>&lt;iframe src="https://vegahols.github.io/market.html" width="100%" height="500" frameborder="0"&gt;&lt;/iframe&gt;</code>
-        </div>
-      </div>
+', cards_html, '
     </div>
 
     <footer>
@@ -237,7 +241,7 @@ index_html <- '<!DOCTYPE html>
     }
   </script>
 </body>
-</html>'
+</html>')
 
 writeLines(index_html, "docs/index.html")
 cat("✓ index.html generated\n")
