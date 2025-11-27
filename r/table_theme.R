@@ -92,8 +92,8 @@ get_grid_pro_config <- function(page_size = 10) {
 #' @return A string containing the JavaScript function
 get_csv_download_function <- function(filename) {
   sprintf('function downloadCSV() {
-    if (grid) {
-      grid.downloadCSV();
+    if (grid && grid.exporting) {
+      grid.exporting.downloadCSV();
     }
   }', filename)
 }
