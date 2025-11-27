@@ -1,4 +1,30 @@
-<!DOCTYPE html>
+#!/usr/bin/env Rscript
+
+# Master build script
+# Generates all charts and the index page
+
+cat("🚀 Building all charts...\n\n")
+
+# Source all chart files
+chart_files <- list.files("r/charts", pattern = "\\.R$", full.names = TRUE)
+
+for (chart_file in chart_files) {
+  cat(paste("Generating:", basename(chart_file), "\n"))
+  source(chart_file)
+
+  # Call the generate function (convention: generate_<name>_chart)
+  chart_name <- gsub("\\.R$", "", basename(chart_file))
+  func_name <- paste0("generate_", chart_name, "_chart")
+
+  if (exists(func_name)) {
+    do.call(func_name, list())
+  }
+}
+
+cat("\n")
+
+# Generate index page
+index_html <- '<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -79,4 +105,10 @@
     </div>
   </div>
 </body>
-</html>
+</html>'
+
+writeLines(index_html, "docs/index.html")
+cat("✓ index.html generated\n")
+
+cat("\n✅ All charts built successfully!\n")
+cat("📦 Ready to commit and push to GitHub Pages\n")

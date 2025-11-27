@@ -1,11 +1,9 @@
 #!/bin/bash
 
-# Regenerate Highcharts visualization with R
-echo "🚀 Generating Highcharts visualization..."
-echo ""
-Rscript r/generate_data.R
+# Build all Highcharts visualizations
+Rscript r/build.R
 echo ""
 echo "📦 Next steps:"
-echo "   git add docs/"
-echo "   git commit -m 'Update chart'"
+echo "   git add docs/ r/"
+echo "   git commit -m 'Update charts'"
 echo "   git push"
