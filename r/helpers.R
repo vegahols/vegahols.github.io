@@ -130,7 +130,8 @@ generate_table_html <- function(title, subtitle, data, columns, filename, page_s
       },
       columnDefaults: %s,
       columns: %s,
-      pagination: %s
+      pagination: %s,
+      style: %s
     });
 
     %s
@@ -145,6 +146,7 @@ generate_table_html <- function(title, subtitle, data, columns, filename, page_s
     jsonlite::toJSON(config$columnDefaults, auto_unbox = TRUE),
     columns_json,
     jsonlite::toJSON(config$pagination, auto_unbox = TRUE),
+    jsonlite::toJSON(config$style, auto_unbox = TRUE),
     download_fn
   )
 }

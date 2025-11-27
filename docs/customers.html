@@ -53,21 +53,52 @@
     box-shadow: 0 1px 3px rgba(0,0,0,0.08);
     background-color: white;
   }
-  /* Force white background and dark text for Grid Pro */
-  .highcharts-datagrid-container,
-  .highcharts-datagrid,
-  .highcharts-datagrid-row,
-  .highcharts-datagrid-cell {
+  /* Force white/light theme for Grid Pro */
+  #grid,
+  #grid * {
     background-color: white !important;
     color: #2c3e50 !important;
   }
-  .highcharts-datagrid-header {
+  /* Header row styling */
+  #grid tr:first-child,
+  #grid thead,
+  #grid th {
     background-color: #f8f9fa !important;
     color: #2c3e50 !important;
-    font-weight: 600;
+    font-weight: 600 !important;
+    border-bottom: 2px solid #e8ecef !important;
   }
-  .highcharts-datagrid-row:hover {
+  /* Table cells */
+  #grid td {
+    border-bottom: 1px solid #f0f0f0 !important;
+    padding: 12px !important;
+  }
+  /* Row hover effect */
+  #grid tr:hover {
     background-color: #f8f9fa !important;
+  }
+  /* Pagination controls */
+  #grid button,
+  #grid select,
+  #grid input {
+    background-color: white !important;
+    color: #2c3e50 !important;
+    border: 1px solid #d0d0d0 !important;
+    padding: 6px 12px !important;
+    border-radius: 4px !important;
+    cursor: pointer !important;
+  }
+  #grid button:hover {
+    background-color: #f0f0f0 !important;
+  }
+  #grid button:disabled {
+    opacity: 0.5 !important;
+    cursor: not-allowed !important;
+  }
+  /* Pagination text */
+  #grid .highcharts-datagrid-pagination,
+  #grid .highcharts-datagrid-pagination * {
+    color: #2c3e50 !important;
   }</style>
   <script src="https://cdn.jsdelivr.net/npm/@highcharts/grid-pro/grid-pro.js"></script>
 </head>
@@ -95,7 +126,8 @@
         const bgColor = value === "Active" ? "#E8F5E9" : "#FFF3E0";
         return `<span style="background-color: ${bgColor}; color: ${color}; padding: 4px 12px; border-radius: 12px; font-weight: 500; font-size: 12px;">${value}</span>`;
       } }}],
-      pagination: {"enabled":true,"pageSize":10,"controls":{"pageSizeSelector":{"enabled":true,"options":[5,10,25,50]},"pageInfo":true,"firstLastButtons":true,"previousNextButtons":true,"pageButtons":{"enabled":true,"count":7}}}
+      pagination: {"enabled":true,"pageSize":10,"controls":{"pageSizeSelector":{"enabled":true,"options":[5,10,25,50]},"pageInfo":true,"firstLastButtons":true,"previousNextButtons":true,"pageButtons":{"enabled":true,"count":7}}},
+      style: {"theme":"light"}
     });
 
     function downloadCSV() {
