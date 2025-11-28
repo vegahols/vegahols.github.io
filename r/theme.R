@@ -8,7 +8,7 @@ source("r/config.R")
 #' @param hc A highchart object
 #' @return A highchart object with theme applied
 apply_common_theme <- function(hc) {
-  hc %>%
+  hc <- hc %>%
     hc_chart(
       backgroundColor = CHART_CONFIG$backgroundColor,
       style = list(fontFamily = CHART_CONFIG$fontFamily)
@@ -19,7 +19,21 @@ apply_common_theme <- function(hc) {
       buttons = EXPORT_CONFIG$buttons,
       menuItemStyle = EXPORT_CONFIG$menuItemStyle
     )
-  # Note: Accessibility module is automatically included by highcharter
+
+  # Add accessibility module dependency
+  hc$dependencies <- c(
+    hc$dependencies,
+    list(
+      htmltools::htmlDependency(
+        name = "highcharts-accessibility",
+        version = "9.3.1",
+        src = c(file = "docs/lib/highcharts-9.3.1/modules"),
+        script = "accessibility.js"
+      )
+    )
+  )
+
+  hc
 }
 
 #' Apply title and subtitle styling
