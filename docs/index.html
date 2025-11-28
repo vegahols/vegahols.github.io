@@ -195,6 +195,25 @@
 
       <div class="card">
         <div class="card-header">
+          <h2>Quarterly Performance</h2>
+          <span class="card-type">Column Chart</span>
+        </div>
+        <div class="chart-preview">
+          <iframe src="performance.html" frameborder="0"></iframe>
+        </div>
+        <p style="color: #7f8c8d; font-size: 0.9rem; margin-bottom: 0.75rem;">Vertical bar chart showing quarterly results</p>
+        <div class="card-actions">
+          <a href="performance.html" class="btn btn-primary">View Full Chart</a>
+          <button class="btn btn-secondary" onclick="toggleEmbed('performance')">Embed Code</button>
+        </div>
+        <div class="embed-code" id="embed-performance">
+          <button class="copy-btn" onclick="copyEmbed('performance')">Copy</button>
+          <code>&lt;iframe src="https://vegahols.github.io/performance.html" width="100%" height="500" frameborder="0"&gt;&lt;/iframe&gt;</code>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
           <h2>Revenue Comparison</h2>
           <span class="card-type">Bar Chart</span>
         </div>
