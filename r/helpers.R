@@ -25,6 +25,19 @@ save_chart <- function(hc, filename, title) {
       libdir = LIB_DIR,
       title = title
     )
+
+    # Add accessibility module script tag
+    html_content <- readLines(filename)
+
+    # Find the last highcharts script tag and add accessibility after it
+    hc_scripts <- grep("lib/highcharts-9.3.1/.*\\.js", html_content)
+    if (length(hc_scripts) > 0) {
+      last_hc_script <- max(hc_scripts)
+      accessibility_script <- '<script src="lib/highcharts-9.3.1/modules/accessibility.js"></script>'
+      html_content <- append(html_content, accessibility_script, after = last_hc_script)
+      writeLines(html_content, filename)
+    }
+
     cat(paste("✓", filename, "generated\n"))
   }, error = function(e) {
     cat(paste("✗ Error generating", filename, ":", e$message, "\n"))
